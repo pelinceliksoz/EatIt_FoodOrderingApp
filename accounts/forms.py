@@ -7,4 +7,4 @@ class UserModelForm(UserCreationForm):
     location = forms.CharField()
     class Meta:
         model = User
-        fields = ['email', 'username', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']
