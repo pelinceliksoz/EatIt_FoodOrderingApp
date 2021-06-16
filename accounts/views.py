@@ -10,49 +10,12 @@ from django.contrib import messages
 from django.http import HttpResponse
 from .forms import UserModelForm
 from restaurantApp.forms import CreateRestaurantForm
+from customerApp.forms import CreateCustomerForm
 from .forms import UserCreationForm
 
 
 def home(request):
     return render(request, 'home.html', {'name' : 'Pelin'});
-
-def restaurantRegister(request):
-    return render(request, 'accounts/restaurantRegister.html')
-
-def customerRegister(request):
-    return render(request, 'accounts/customerRegister.html')
-
-def register(request):
-    if request.method == 'POST':
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        username = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        email = request.POST['email']
-        phone = request.POST['phone']
-        location = request.POST['location']
-
-        if(password1==password2):
-            if User.objects.filter(username=username).exists():
-                #messages.info(request,'Username Taken')
-                print('username taken')
-                return redirect('register')
-            elif User.objects.filter(email=email).exists():
-                #messages.info(request,'Email Taken')
-                print('email taken')
-                return redirect('register')
-            else:
-                user = User.objects.create_user(username=username, password=password1, email=email, first_name=first_name)
-                user.save();
-                print('user created')
-                return redirect('login')
-        else:
-            messages.info(request, 'Password not matched')
-            print('password not matched')
-        return redirect('register')
-    else:
-        return render(request,'accounts/register.html')
 
 def login(request):
     if request.method == 'POST':
@@ -63,14 +26,28 @@ def login(request):
 
         if user is not None:
             auth.login(request,user)
-            #return render(request, 'customerApp/customerMainPage.html')
-            return render(request,'restaurantApp/restaurantMainPage.html')
+
+            uid = request.user.id
+            if get_user_type(uid) == 1 : #restaurant login
+                return render(request, 'restaurantApp/restaurantMainPage.html')
+            else:  #customer login
+                return render(request, 'customerApp/customerMainPage.html')
+
         else:
             messages.info(request, 'invalid credentials')
             print('invalid credentials')
             return redirect('login')
     else:
         return render(request, 'accounts/login.html')
+
+# Returns:
+# 1 if restaurant
+# 2 if customer
+def get_user_type(uid):
+    if Restaurant.objects.filter(user_id=uid).exists():
+        return 1
+    else:
+        return 2
 
 
 def logout(request):
@@ -104,13 +81,13 @@ class restaurantRegister(TemplateView):
             )
             user.save()
             restaurant.save()
-            return render(request, 'restaurantApp/restaurantMainPage.html')
+            return redirect('/accounts/login')
         else:
             return redirect('/')
 
 class customerRegister(TemplateView):
     def get(self, request):
-        form = UserModelForm()
+        form = CreateCustomerForm()
 
         context = {
             'form': form
@@ -118,7 +95,7 @@ class customerRegister(TemplateView):
         return render(request, "accounts/customerRegister.html", context)
 
     def post(self, request):
-        form =UserModelForm(request.POST)
+        form =CreateCustomerForm(request.POST)
 
         if form.is_valid():
             user = form.save()
@@ -129,9 +106,10 @@ class customerRegister(TemplateView):
             )
             customer = Customer.objects.create(
                 user=usermodel,
+                address=form.cleaned_data["address"]
             )
             user.save()
             customer.save()
-            return render(request, 'customerApp/customerMainPage.html')
+            return redirect('/accounts/login')
         else:
             return redirect('/')

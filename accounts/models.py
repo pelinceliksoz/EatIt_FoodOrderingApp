@@ -7,7 +7,7 @@ class UserModel(models.Model):
         User,
         on_delete=models.CASCADE
     )
-    phone = models.IntegerField()
+    phone = models.CharField(max_length=80)
     location = models.CharField(max_length=80)
 
     def __str__(self):
