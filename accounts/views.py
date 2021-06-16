@@ -98,12 +98,13 @@ class restaurantRegister(TemplateView):
             )
             restaurant = Restaurant.objects.create(
                 user=usermodel,
+                restaurant_name=form.cleaned_data["restaurant_name"],
                 category=form.cleaned_data["category"],
                 rate=0,
             )
             user.save()
             restaurant.save()
-            return redirect('/')
+            return render(request, 'restaurantApp/restaurantMainPage.html')
         else:
             return redirect('/')
 
@@ -131,7 +132,6 @@ class customerRegister(TemplateView):
             )
             user.save()
             customer.save()
-
-            return redirect('/')
+            return render(request, 'customerApp/customerMainPage.html')
         else:
             return redirect('/')

@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 class CreateRestaurantForm(UserCreationForm):
     phone = forms.IntegerField()
     location = forms.CharField()
+    restaurant_name = forms.CharField()
     category = forms.CharField()
     class Meta:
         model = User

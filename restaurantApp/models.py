@@ -8,6 +8,7 @@ class Restaurant(models.Model):
         primary_key=True,
     )
     rate = models.IntegerField(null=0)
+    restaurant_name = models.CharField(max_length=80, null=True)
     category = models.CharField(max_length=80, null=True)
     def __str__(self):
         return self.user.user.username
