@@ -28,6 +28,8 @@ def login(request):
             auth.login(request,user)
 
             uid = request.user.id
+            print(uid)
+            print(get_user_type(uid))
             if get_user_type(uid) == 1 : #restaurant login
                 return render(request, 'restaurantApp/restaurantMainPage.html')
             else:  #customer login
@@ -44,7 +46,7 @@ def login(request):
 # 1 if restaurant
 # 2 if customer
 def get_user_type(uid):
-    if Restaurant.objects.filter(user_id=uid).exists():
+    if Restaurant.objects.filter(user=UserModel.objects.get(user_id=uid)).exists():
         return 1
     else:
         return 2
@@ -113,3 +115,6 @@ class customerRegister(TemplateView):
             return redirect('/accounts/login')
         else:
             return redirect('/')
+
+def index(request):
+    return render(request, 'index.html')

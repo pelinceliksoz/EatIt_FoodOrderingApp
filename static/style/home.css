@@ -1,0 +1,79 @@
+body {
+    margin: 0px;
+    background-image: url('../images/Untitled.jpg');
+    background-position: top center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.initialPH {
+    font-family: "Times New Roman";
+    font-weight: bolder;
+    color: black;
+    font-size: 130px;
+}
+.second {
+    font-family: "Times New Roman";
+    font-weight: bolder;
+    font-size: 130px;
+}
+.color1 {
+    color: blue;
+}
+.color2 {
+    color: #6d1111;
+}
+.color3 {
+    color: #2b5d08;
+}
+
+.initialPHeader {
+    font-family: "Berlin Sans FB";
+    font-weight: bolder;
+    color: #6d1111;
+    font-size: 40px;
+    margin: 0px 20px 20px 20px;
+    padding-top: 20px;
+    text-align: center;
+}
+.initialP .nav-links {
+    float: right;
+    float: top;
+    margin-right: 50px;
+}
+
+.paragraph {
+    font-family: Bahnschrift;
+    font-weight: bolder;
+    line-height: 2;
+    color: #000000;
+    text-align: center;
+    word-spacing: 2px;
+    font-size: 20px;
+}
+.navbar-brand {
+    margin-left: 30px;
+}
+
+.navbar-brand {
+/*{#padding-top: 25px;#}*/
+}
+.navbar-brand h1 {
+    font-family: 'Lora', serif;
+    color: #ffffff;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #222;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: .75;
+}
+.navbar-brand {
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 3px 3px 3px #222;
+    line-height: .75;
+    margin-bottom: -20px;
+    margin-top: -20px;
+}
