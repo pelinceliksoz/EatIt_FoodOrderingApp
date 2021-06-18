@@ -1,6 +1,6 @@
 body {
     margin: 0px;
-    background-image: url('../images/Untitled.jpg');
+    background-image: url('/static/images/register_login.jpg');
     background-position: top center;
     background-attachment: fixed;
     background-repeat: no-repeat;

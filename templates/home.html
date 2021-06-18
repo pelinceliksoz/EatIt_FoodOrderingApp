@@ -12,10 +12,10 @@
         <link rel="stylesheet" href='{% static "style/home.css"%}'>
 
         <header>
-            <nav class="navbar navbar-light bg-dark">
+            <nav class="navbar navbar-light bg-transparent">
                     <div class="navbar-header">
                         <div class="navbar-brand">
-                            <a href=""><img src="../../../static/images/onlyName.png" alt="course image" ></a>
+                            <a href=""><img src="/static/images/eatit_text_2.png" alt="course image" ></a>
                         </div>
                     </div>
                     <a class="btn btn-sm btn-success btn-lg" style="margin-right: 30px; font-size: x-large; width: 180px" href="{% url 'login' %}">Login</a>
@@ -27,31 +27,29 @@
 {#    <div class="container">#}
         <div class="row">
             <div class="col-lg-6 " style="padding: 120px 120px 120px 200px;">
-                <h1 class="initialPH">Learn <span class= " second color1"> easy </span> </h1>
-                <h1 class="initialPH">Earn  <span class= " second color2"> more </span> </h1>
-                <h1 class="initialPH">Start <span class= " second color3"> Now. </span> </h1>
+                <h1 class="initialPH"> <span class= " second color1">  </span> </h1>
+                <h1 class="initialPH">  <span class= " second color2">  </span> </h1>
+                <h1 class="initialPH"> <span class= " second color3">  </span> </h1>
             </div>
             <div class="col-lg-1"></div>
             <div class="col-lg " style="padding: 120px 140px 120px 120px;">
-                <h1 class="initialPHeader"> Hey you, Peaky! </h1>
-                <p class="paragraph">Are you ready to learn? Are you ready to gain money? You are at the right place.
-                    Peaky Learn is an online course platform providing many courses to improve yourself about
-                    academia to social life, hobbies & interests any many more subfields! You can also be an
-                    instructor and can earn money by publishing lectures. <span class= "color1">
+                <h1 class="initialPHeader"> Hey you! </h1>
+                <p class="paragraph">Are you hungry? You are at the right place.
+                    Eat it is an online food delivery platform providing many restaurants with their menus! ... <span class= "color1">
                                     Sounds good, </span> <span class= "color2"> so do not be LATE! Come on!  </span>
                     <span class= "color3">Enroll NOW! </span></p>
                 <div class="row">
                     <div class="col-lg-6">
                         <nav >
                             <ul class="nav-links">
-                                <a class="btn btn-sm btn-primary" style="margin-right: 30px; font-size: x-large; width: 200px" href="{% url 'restaurantRegister'%}">Restaurant Register</a>
+                                <a class="btn btn-sm btn-primary" style="margin-right: 30px; font-size: x-large; width: 250px" href="{% url 'restaurantRegister'%}">Restaurant Register</a>
                             </ul>
                         </nav>
                     </div>
                     <div class="col-lg-6">
                         <nav >
                             <ul class="nav-links">
-                                <a class="btn btn-sm btn-danger" style="margin-right: 80px; font-size: x-large; width: 180px" href="{% url 'customerRegister'%}">Customer Register</a>
+                                <a class="btn btn-sm btn-danger" style="margin-right: 80px; font-size: x-large; width: 250px" href="{% url 'customerRegister'%}">Customer Register</a>
                             </ul>
                         </nav>
                     </div>

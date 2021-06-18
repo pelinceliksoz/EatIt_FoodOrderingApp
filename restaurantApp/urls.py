@@ -1,6 +1,8 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
+
 urlpatterns = [
-    path('restaurantApp/restaurantMainPage', views.restaurantMainPage, name = 'restaurantMainPage'),
+    path('restaurantMainPage', views.restaurant_main_page, name='restaurantMainPage'),
+    path('addFood/<int:restaurant_id>/', views.AddFood.as_view(), name='addFood'),
 ]

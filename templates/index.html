@@ -1,84 +1,90 @@
-<!DOCTYPE html>
-{% load static %}
-<html>
+{%  extends 'PeakyLearn/main.html' %}
 
+{% block content %}
+    {% load listtag %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
+{#<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">#}
+{#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>Login</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-    <link rel="stylesheet" href='{% static "style/login.css"%}'>
+    <meta charset="UTF-8">
+    <title>Welcome {{ username }}
+    </title>
 
 </head>
 <body>
-	<<body>
-    <div class="split signUp left">
-        {% if messages %}
-            <div class="alert">
-                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    </div>
 
-    <div class="split right">
-		<div class="d-flex justify-content-center h-100">
-			<div class="user_card">
-                <img id="lock" src='{% static "images/lock.png"%}' alt="lock symbol">
-				<div class="d-flex justify-content-center">
-					<h3 id="form-title">Register</h3>
-				</div>
-				<div class="d-flex justify-content-center form_container">
+{% if messages %}
+{% endif %}
 
-					<form method="POST" action="">
-                        {% csrf_token %}
-                        {{ form }}
+<div class = "jumbotron text-center" >
+    <h1>Welcome {{ username }} [Educator]</h1>
+    <a style="margin: 20px" class="btn btn-sm btn-primary" href="{% url 'educatorCreatedCourses' %}">See My Created Courses</a>
+    <a style="margin: 20px" class="btn btn-sm btn-success" href="{% url 'addCourse' %}">Add a Course</a>
+    <h3> All Courses </h3>
+    <hr>
+
+    <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+            <th>Course ID</th>
+            <th>Course Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Language</th>
+            <th>Educator ID</th>
+            <th>Description</th>
+            <th>Average Rating</th>
+            <th></th>
 
 
-				   		<div class="d-flex justify-content-center mt-3 login_container">
-				 			<input class="btn login_btn" type="submit" value="Register">
-				   		</div>
-					</form>
-				</div>
+        </tr>
+      </thead>
+      <tbody>
+          {% for course in all_courses %}
+              <tr>
 
-                {{ form.errors }}
+                    <td>{{ course.0 }}</td>
+                    <td>{{ course.1 }}</td>
+                    <td>{{ course.2 }}</td>
+                    <td>{{ course.3 }}</td>
+                    <td>{{ course.4 }}</td>
+                    <td>{{ course.5 }}</td>
+                    <td>{{ course.6 }}</td>
+                    <td>{{ avg_rating|return_item:forloop.counter0 }}</td>
+                    <td><a class="btn btn-sm btn-dark" href="{% url 'courseDetails' course.0 %}">Course Page</a></td>
+              </tr>
+          {% endfor %}
+      </tbody>
+      <tfoot>
 
-				<div class="mt-4">
-					<div class="d-flex justify-content-center links">
-						Do you have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<script>
-						/* Because i didnt set placeholder values in forms.py they will be set here using vanilla Javascript
-		//We start indexing at one because CSRF_token is considered and input field
-		 */
+             <th>Course ID</th>
+            <th>Course Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Language</th>
+            <th>Educator ID</th>
+            <th>Description</th>
+            <th>Average Rating</th>
+            <th></th>
 
-		//Query All input fields
-		var form_fields = document.getElementsByTagName('input')
-		form_fields[1].placeholder='First Name...';
-		form_fields[2].placeholder='Last Name...';
-		form_fields[3].placeholder='Email Address...';
-		form_fields[4].placeholder='Username...';
-		form_fields[5].placeholder='Password...';
-		form_fields[6].placeholder='Password...';
-		form_fields[7].placeholder='Phone...';
-		form_fields[8].placeholder='Location...';
-		form_fields[9].placeholder='Restaurant Name...';
-		form_fields[10].placeholder='Category...';
+      </tfoot>
+    </table>
 
+<script>
+$(document).ready(function() {
+    $('#products').DataTable();
+} );
 
+</script>
 
+</div>
 
-		for (var field in form_fields){
-			form_fields[field].className += ' form-control'
-		}
-	</script>
 </body>
 </html>
+
+{% endblock %}

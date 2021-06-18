@@ -11,11 +11,11 @@ from django.http import HttpResponse
 from .forms import UserModelForm
 from restaurantApp.forms import CreateRestaurantForm
 from customerApp.forms import CreateCustomerForm
-from .forms import UserCreationForm
+from django.views import View
 
 
 def home(request):
-    return render(request, 'home.html', {'name' : 'Pelin'});
+    return render(request, 'home.html', {'name': 'Pelin'});
 
 def login(request):
     if request.method == 'POST':
@@ -29,11 +29,10 @@ def login(request):
 
             uid = request.user.id
             print(uid)
-            print(get_user_type(uid))
-            if get_user_type(uid) == 1 : #restaurant login
-                return render(request, 'restaurantApp/restaurantMainPage.html')
+            if get_user_type(uid) == 1: #restaurant login
+                return redirect('restaurantMainPage')
             else:  #customer login
-                return render(request, 'customerApp/customerMainPage.html')
+                return redirect('customerMainPage')
 
         else:
             messages.info(request, 'invalid credentials')
@@ -51,12 +50,11 @@ def get_user_type(uid):
     else:
         return 2
 
-
 def logout(request):
     auth.logout(request)
     return redirect('/')
 
-class restaurantRegister(TemplateView):
+class restaurantRegister(View):
     def get(self, request):
         form = CreateRestaurantForm()
 
@@ -87,7 +85,7 @@ class restaurantRegister(TemplateView):
         else:
             return redirect('/')
 
-class customerRegister(TemplateView):
+class customerRegister(View):
     def get(self, request):
         form = CreateCustomerForm()
 
