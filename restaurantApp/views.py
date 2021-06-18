@@ -5,8 +5,6 @@ from .models import Restaurant
 from django.contrib.auth.models import User
 from django.views import View
 
-
-# Create your views here.
 def restaurant_main_page(request):
     user_id = request.user.id
     restaurant = Restaurant.objects.get(user__user_id=user_id)
@@ -32,7 +30,7 @@ class AddFood(View):
 
         if form.is_valid():
             food = form.save()
-            restaurant = Restaurant.objects.get(id=restaurant_id)
+            restaurant = Restaurant.objects.get(user_id=restaurant_id)
             food.restaurant = restaurant
             food.save()
 
@@ -43,6 +41,10 @@ class AddFood(View):
             return redirect('/')
         else:
             return redirect('/')
+
+def restaurant_menu(request):
+    context = {}
+    return render(request, 'restaurantApp/restaurantMenu.html', context)
 
 
 

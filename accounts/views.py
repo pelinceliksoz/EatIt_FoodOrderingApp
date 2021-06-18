@@ -15,7 +15,7 @@ from django.views import View
 
 
 def home(request):
-    return render(request, 'home.html', {'name': 'Pelin'});
+    return render(request, 'djangoP/home.html', {'name': 'Pelin'});
 
 def login(request):
     if request.method == 'POST':
@@ -115,4 +115,4 @@ class customerRegister(View):
             return redirect('/')
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'djangoP/index.html')
