@@ -13,9 +13,11 @@ from restaurantApp.forms import CreateRestaurantForm
 from customerApp.forms import CreateCustomerForm
 from django.views import View
 
+class Home(View):
 
-def home(request):
-    return render(request, 'djangoP/home.html', {'name': 'Pelin'});
+    def get(self, request):
+        return render(request, 'djangoP/home.html', {'name': 'Eat It!'});
+
 
 def login(request):
     if request.method == 'POST':
@@ -50,12 +52,17 @@ def get_user_type(uid):
     else:
         return 2
 
-def logout(request):
-    auth.logout(request)
-    return redirect('/')
+class Logout(View):
 
-class restaurantRegister(View):
     def get(self, request):
+
+        auth.logout(request)
+        return redirect('/')
+
+class RestaurantRegister(View):
+
+    def get(self, request):
+
         form = CreateRestaurantForm()
 
         context = {
@@ -64,7 +71,8 @@ class restaurantRegister(View):
         return render(request, "accounts/restaurantRegister.html", context)
 
     def post(self, request):
-        form =CreateRestaurantForm(request.POST)
+
+        form = CreateRestaurantForm(request.POST)
 
         if form.is_valid():
             user = form.save()
@@ -85,7 +93,8 @@ class restaurantRegister(View):
         else:
             return redirect('/')
 
-class customerRegister(View):
+class CustomerRegister(View):
+
     def get(self, request):
         form = CreateCustomerForm()
 
@@ -115,4 +124,5 @@ class customerRegister(View):
             return redirect('/')
 
 def index(request):
+
     return render(request, 'djangoP/index.html')

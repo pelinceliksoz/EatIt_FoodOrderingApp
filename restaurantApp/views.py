@@ -5,13 +5,16 @@ from .models import Restaurant
 from django.contrib.auth.models import User
 from django.views import View
 
-def restaurant_main_page(request):
-    user_id = request.user.id
-    restaurant = Restaurant.objects.get(user__user_id=user_id)
-    context = {
-        'restaurant': restaurant
-    }
-    return render(request, 'restaurantApp/restaurantMainPage.html', context)
+class RestaurantMainPage(View):
+
+    def get(self, request):
+
+        user_id = request.user.id
+        restaurant = Restaurant.objects.get(user__user_id=user_id)
+        context = {
+            'restaurant': restaurant
+        }
+        return render(request, 'restaurantApp/restaurantMainPage.html', context)
 
 
 class AddFood(View):
@@ -42,9 +45,11 @@ class AddFood(View):
         else:
             return redirect('/')
 
-def restaurant_menu(request):
-    context = {}
-    return render(request, 'restaurantApp/restaurantMenu.html', context)
+class RestaurantMenu(View):
+
+    def get(self, request):
+        context = {}
+        return render(request, 'restaurantApp/restaurantMenu.html', context)
 
 
 
