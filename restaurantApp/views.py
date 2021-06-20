@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 from .forms import AddFoodForm
 from .models import Restaurant
-from django.contrib.auth.models import User
+from common.models import Food
 from django.views import View
 
 class RestaurantMainPage(View):
@@ -47,8 +47,13 @@ class AddFood(View):
 
 class RestaurantMenu(View):
 
-    def get(self, request):
-        context = {}
+    def get(self, request, pk):
+        requested_restaurant = Restaurant.objects.get(user_id=pk)
+        foods = Food.objects.filter(restaurant=requested_restaurant)
+        context = {
+            'restaurant': requested_restaurant,
+            'foods': foods
+        }
         return render(request, 'restaurantApp/restaurantMenu.html', context)
 
 

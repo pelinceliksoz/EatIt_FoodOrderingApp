@@ -36,14 +36,14 @@
         </tr>
       </thead>
       <tbody>
-          {% for retaurant in all_restaurants %}
+          {% for restaurant in all_restaurants %}
               <tr>
-                    <td>{{ retaurant.restaurant_name }}</td>
-                    <td>{{ retaurant.category }}</td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'restaurantMenu' %}">Show Menu</a></td>
+                    <td>{{ restaurant.restaurant_name }}</td>
+                    <td>{{ restaurant.category }}</td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'restaurantMenu' pk=restaurant.user_id %}">Show Menu</a></td>
               </tr>
           {% endfor %}
-      </tbody>
+      </tbody>restaurant
       <tfoot>
             <th>Restaurant Name</th>
             <th>Category</th>
