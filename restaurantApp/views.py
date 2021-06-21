@@ -8,11 +8,12 @@ from django.views import View
 class RestaurantMainPage(View):
 
     def get(self, request):
-
         user_id = request.user.id
         restaurant = Restaurant.objects.get(user__user_id=user_id)
+        restaurant_foods = Food.objects.filter(restaurant=restaurant)
         context = {
-            'restaurant': restaurant
+            'restaurant': restaurant,
+            'foods': restaurant_foods
         }
         return render(request, 'restaurantApp/restaurantMainPage.html', context)
 
@@ -24,7 +25,7 @@ class AddFood(View):
         form = AddFoodForm()
         context = {
             'form': form,
-            'restaurant': restaurant
+            'restaurant': restaurant,
         }
         return render(request, "restaurantApp/addFood.html", context)
 
