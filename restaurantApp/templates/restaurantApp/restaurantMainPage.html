@@ -46,8 +46,9 @@
                     <td>{{ food.category }}</td>
                     <td>{{ food.description }}</td>
                     <td>{{ food.price }}</td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Delete</a></td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Update</a></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'updateFood' pk=food.pk%}">Update</a></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'deleteFood' pk=food.pk %}">Delete</a></td>
+
 
               </tr>
           {% endfor %}

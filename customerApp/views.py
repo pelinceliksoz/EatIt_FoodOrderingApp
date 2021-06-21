@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from common.models import Food
 from restaurantApp.models import Restaurant
 
 class CustomerMainPage(View):
@@ -14,6 +15,16 @@ class CustomerMainPage(View):
             'all_restaurants': all_restaurants
         }
         return render(request, 'customerApp/customerMainPage.html', context)
+
+class OrderFood(View):
+
+    def get(self, request, pk):
+
+        food = Food.objects.get(pk=pk)
+        context = {
+            'food': food
+        }
+        return render(request,'customerApp/orderFood.html', context)
 
 
 

@@ -43,7 +43,7 @@
                     <td>{{ food.category }}</td>
                     <td>{{ food.description }}</td>
                     <td>{{ food.price }}</td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'restaurantMenu' pk=restaurant.user_id %}">Order</a></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'orderFood' pk=food.pk %}">Order</a></td>
 
               </tr>
           {% endfor %}
