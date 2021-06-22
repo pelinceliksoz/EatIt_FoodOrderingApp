@@ -1,5 +1,7 @@
 from django.db import models
-from restaurantApp.models import Restaurant
+from restaurant_operations.models import Restaurant
+from customer_operations.models import Customer
+
 
 class Food(models.Model):
     food_name = models.CharField(max_length=80)
@@ -7,5 +9,11 @@ class Food(models.Model):
     price = models.FloatField(null=0)
     description = models.CharField(max_length=80, null=True)
     restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.SET_NULL)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    likes = models.ManyToManyField(Customer, related_name='restaurant_foods')
+
+    def total_likes(self):
+        return self.likes.count()
+
     def __str__(self):
         return self.food_name

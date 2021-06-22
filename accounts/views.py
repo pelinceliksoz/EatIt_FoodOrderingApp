@@ -3,23 +3,26 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.views.generic import TemplateView
 
-from accounts.models import UserModel
-from restaurantApp.models import Restaurant
-from customerApp.models import Customer
+from accounts.models import CustomUser
+from restaurant_operations.models import Restaurant
+from customer_operations.models import Customer
 from django.contrib import messages
 from django.http import HttpResponse
-from .forms import UserModelForm
-from restaurantApp.forms import CreateRestaurantForm
-from customerApp.forms import CreateCustomerForm
+from .forms import CustomUserForm
+from restaurant_operations.forms import CreateRestaurantForm
+from customer_operations.forms import CreateCustomerForm
 from django.views import View
+
 
 class Home(View):
 
     def get(self, request):
+
         return render(request, 'djangoP/home.html', {'name': 'Eat It!'});
 
 
 def login(request):
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -31,10 +34,13 @@ def login(request):
 
             uid = request.user.id
             print(uid)
-            if get_user_type(uid) == 1: #restaurant login
-                return redirect('restaurantMainPage')
-            else:  #customer login
-                return redirect('customerMainPage')
+
+            # restaurant login
+            if get_user_type(uid) == 1:
+                return redirect('restaurant_main_page')
+            # customer login
+            else:
+                return redirect('customer_main_page')
 
         else:
             messages.info(request, 'invalid credentials')
@@ -43,14 +49,16 @@ def login(request):
     else:
         return render(request, 'accounts/login.html')
 
+
 # Returns:
 # 1 if restaurant
 # 2 if customer
 def get_user_type(uid):
-    if Restaurant.objects.filter(user=UserModel.objects.get(user_id=uid)).exists():
+    if Restaurant.objects.filter(user=CustomUser.objects.get(user_id=uid)).exists():
         return 1
     else:
         return 2
+
 
 class Logout(View):
 
@@ -58,6 +66,7 @@ class Logout(View):
 
         auth.logout(request)
         return redirect('/')
+
 
 class RestaurantRegister(View):
 
@@ -68,7 +77,7 @@ class RestaurantRegister(View):
         context = {
             'form': form
         }
-        return render(request, "accounts/restaurantRegister.html", context)
+        return render(request, "accounts/restaurant_register.html", context)
 
     def post(self, request):
 
@@ -76,13 +85,13 @@ class RestaurantRegister(View):
 
         if form.is_valid():
             user = form.save()
-            usermodel = UserModel.objects.create(
+            custom_user = CustomUser.objects.create(
                 user=user,
                 phone=form.cleaned_data["phone"],
                 location=form.cleaned_data["location"],
             )
             restaurant = Restaurant.objects.create(
-                user=usermodel,
+                user=custom_user,
                 restaurant_name=form.cleaned_data["restaurant_name"],
                 category=form.cleaned_data["category"],
                 rate=0,
@@ -93,28 +102,31 @@ class RestaurantRegister(View):
         else:
             return redirect('/')
 
+
 class CustomerRegister(View):
 
     def get(self, request):
+
         form = CreateCustomerForm()
 
         context = {
             'form': form
         }
-        return render(request, "accounts/customerRegister.html", context)
+        return render(request, "accounts/customer_register.html", context)
 
     def post(self, request):
-        form =CreateCustomerForm(request.POST)
+
+        form = CreateCustomerForm(request.POST)
 
         if form.is_valid():
             user = form.save()
-            usermodel = UserModel.objects.create(
+            custom_user = CustomUser.objects.create(
                 user=user,
                 phone=form.cleaned_data["phone"],
                 location=form.cleaned_data["location"],
             )
             customer = Customer.objects.create(
-                user=usermodel,
+                user=custom_user,
                 address=form.cleaned_data["address"]
             )
             user.save()
@@ -122,6 +134,7 @@ class CustomerRegister(View):
             return redirect('/accounts/login')
         else:
             return redirect('/')
+
 
 def index(request):
 

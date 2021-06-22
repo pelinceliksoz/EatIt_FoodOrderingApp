@@ -1,18 +1,21 @@
 from django.urls import path, include
-import customerApp
-import restaurantApp
+import customer_operations
+import restaurant_operations
+import common
 from . import views
-from restaurantApp import urls
-from customerApp import urls
+from restaurant_operations import urls
+from customer_operations import urls
+from common import urls
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('index', views.index, name ='index'),
-    path('accounts/restaurantRegister', views.RestaurantRegister.as_view(), name='restaurantRegister'),
-    path('accounts/customerRegister', views.CustomerRegister.as_view(), name='customerRegister'),
+    path('index', views.index, name='index'),
+    path('accounts/restaurant_register', views.RestaurantRegister.as_view(), name='restaurant_register'),
+    path('accounts/customer_register', views.CustomerRegister.as_view(), name='customer_register'),
     path('accounts/login', views.login, name='login'),
     path('accounts/logout', views.Logout.as_view(), name='logout'),
-    path('restaurantApp/', include(restaurantApp.urls)),
-    path('customerApp/', include(customerApp.urls))
+    path('restaurant_operations/', include(restaurant_operations.urls)),
+    path('customer_operations/', include(customer_operations.urls)),
+    path('common/', include(common.urls))
 
 ]

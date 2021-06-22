@@ -58,12 +58,13 @@
                 </li>
                 <!-- Badge -->
                 <li style="padding-left:20px;" class="nav-item">
-                    <a class="nav-link" href="{% url 'index'%}">
+                    <a class="nav-link" href="{% url 'liked_foods' %}">
                         <span class="badge badge-pill bg-danger">1</span>
                         <span><i class="fas fa-heart"></i></span>
                     </a>
                 </li>
                 <li style="padding-left:20px;" class="nav-item">
+                    <td><a href="{% url 'index' %}" class = "btn btn-info">My Profile</a></td>
                     <td><a href="{% url 'logout' %}" class = "btn btn-danger">Logout</a></td>
                 </li>
             </ul>

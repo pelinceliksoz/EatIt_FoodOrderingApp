@@ -1,0 +1,125 @@
+.Leanor {border-color: #bab3b3;
+    border-width:5px;
+    background: #bab3b3;
+    height: 300px;
+    align-items: center;
+    align-content: center;
+}
+.courseName {
+    text-align: center;
+    padding: 0px;
+    color: #9d0e0e;
+    font-size: 60px;
+    font-family: Bahnschrift;
+}
+
+.star-ratings-css {
+    unicode-bidi: bidi-override;
+    color: #adb7cc;
+    font-size: 50px;
+    height: 50px;
+    width: 200px;
+    margin: 0 auto;
+    position: relative;
+    text-shadow: 0 1px 0 #a2a2a2;
+}
+.star-ratings-css::before {
+    content: '★★★★★';
+    opacity: .3;
+}
+
+[title="0"]::after {
+    width: 0%;
+}
+[title="0.5"]::after {
+    width: 10%;
+}
+[title="1.0"]::after {
+    width: 20%;
+}
+[title="1.5"]::after {
+    width: 30%;
+}
+[title="2.0"]::after {
+    width: 40%;
+}
+[title="2.5"]::after {
+    width: 50%;
+}
+[title="3.0"]::after {
+    width: 60%;
+}
+[title="3.5"]::after {
+    width: 70%;
+}
+[title="4.0"]::after {
+    width: 80%;
+}
+[title="4.5"]::after {
+    width: 90%;
+}
+
+.star-ratings-css::after {
+    color: gold;
+    content: '★★★★★';
+    text-shadow: 0 1px 0 #ab5414;
+    position: absolute;
+    z-index: 1;
+    display: block;
+    left: 0;
+    top:0;
+    width: attr(rating);
+    overflow: hidden;
+}
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+.accordion:after {
+    content: '\02795'; /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #777;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+p.b {
+    width: 150px;
+    overflow:hidden;
+    line-height: 2rem;
+    max-height: 8rem;
+    -webkit-box-orient: vertical;
+    display: block;
+    display: -webkit-box;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+}
+
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);

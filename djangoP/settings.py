@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'customerApp',
-    'restaurantApp',
+    'customer_operations',
+    'restaurant_operations',
     'common'
 ]
 
@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'djangoP.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'djangoP',
+        'NAME': 'eatit',
         'USER': 'postgres',
         'PASSWORD': '1234',
         'HOST': 'localhost'
