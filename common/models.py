@@ -9,8 +9,8 @@ class Food(models.Model):
     price = models.FloatField(null=0)
     description = models.CharField(max_length=80, null=True)
     restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.SET_NULL)
-    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     likes = models.ManyToManyField(Customer, related_name='restaurant_foods')
+    orders = models.ManyToManyField(Customer, related_name='order_foods')
 
     def total_likes(self):
         return self.likes.count()

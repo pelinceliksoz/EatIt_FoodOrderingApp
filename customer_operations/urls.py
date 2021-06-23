@@ -3,9 +3,11 @@ from . import views
 
 urlpatterns = [
     path('customer_main_page', views.CustomerMainPage.as_view(), name='customer_main_page'),
-    path('order_food/<int:pk>/', views.OrderFood.as_view(), name='order_food'),
+    path('food_details/<int:pk>/', views.FoodDetails.as_view(), name='food_details'),
     path('make_comment/<int:pk>/', views.MakeComment.as_view(), name='make_comment'),
     path('like/<int:pk>/', views.LikeView.as_view(), name='like_food'),
     path('liked_foods', views.LikedFoods.as_view(), name='liked_foods'),
-    path('remove_like/<int:pk>/', views.RemoveLike.as_view(), name='remove_like')
+    path('remove_like/<int:pk>/', views.RemoveLike.as_view(), name='remove_like'),
+    path('confirm_order_customer/<int:pk>/', views.ConfirmOrderCustomer.as_view(), name='confirm_order_customer'),
+    path('customer_show_orders', views.CustomerShowOrders.as_view(), name='customer_show_orders')
 ]

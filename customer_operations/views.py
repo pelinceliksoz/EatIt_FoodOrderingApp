@@ -21,7 +21,7 @@ class CustomerMainPage(View):
         return render(request, 'customer_operations/customer_main_page.html', context)
 
 
-class OrderFood(View):
+class FoodDetails(View):
 
     def get(self, request, pk):
 
@@ -32,7 +32,7 @@ class OrderFood(View):
             'food': food,
             'total_likes': total_likes
         }
-        return render(request, 'customer_operations/order_food.html', context)
+        return render(request, 'customer_operations/food_details.html', context)
 
 
 class MakeComment(View):
@@ -45,7 +45,7 @@ class MakeComment(View):
             'customer': customer,
             'food': food
         }
-        return render(request, 'customer_operations/order_food.html', context)
+        return render(request, 'customer_operations/food_details.html', context)
 
 
 class LikeView(View):
@@ -53,7 +53,7 @@ class LikeView(View):
     def post(self, request, pk):
         food = get_object_or_404(Food, id=request.POST.get('food_pk'))
         food.likes.add(request.user.customuser.customer)
-        return HttpResponseRedirect(reverse('order_food', args=[str(pk)]))
+        return HttpResponseRedirect(reverse('food_details', args=[str(pk)]))
 
 
 class LikedFoods(View):
@@ -87,6 +87,41 @@ class RemoveLike(View):
         food.likes.remove(customer)
 
         return redirect('liked_foods')
+
+
+class ConfirmOrderCustomer(View):
+
+    def get(self, request, pk):
+
+        food = Food.objects.get(id=pk)
+        context = {
+            'food': food
+        }
+        return render(request, 'customer_operations/confirm_order_customer.html', context)
+
+    def post(self, request, pk):
+
+        food = Food.objects.get(id=pk)
+        food.orders.add(request.user.customuser.customer)
+        return redirect('/')
+
+
+class CustomerShowOrders(View):
+
+    def get(self, request):
+
+        customer_name = Customer.objects.get(pk=request.user.customuser.customer.pk)
+        ordered_foods = Food.objects.filter(orders=request.user.customuser.customer)
+
+        context = {
+            'customer_name': customer_name,
+            'ordered_foods': ordered_foods
+        }
+        return render(request, 'customer_operations/customer_show_orders.html', context)
+
+
+
+
 
 
 

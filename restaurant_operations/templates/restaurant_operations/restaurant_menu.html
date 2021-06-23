@@ -17,7 +17,7 @@
 <body>
 <br>
 
-<a class="btn btn-sm btn-outline-primary" href="{% url 'index'  %}">Show Orders</a>
+<a class="btn btn-sm btn-outline-primary" href="{% url 'customer_show_orders'  %}">Show Orders</a>
 
 <div class = "jumbotron text-center" >
     <h1>{{ restaurant.restaurant_name }}</h1>
@@ -41,7 +41,7 @@
                     <td>{{ food.food_name }}</td>
                     <td>{{ food.category }}</td>
                     <td>{{ food.price }}</td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'order_food' pk=food.pk %}">Show Details to Make an Order</a></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'food_details' pk=food.pk %}">Show Details to Make an Order</a></td>
                     <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Make Comment</a></td>
 
 

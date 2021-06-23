@@ -19,7 +19,7 @@
                     <h2 style="text-align: center"> Total Likes: {{ total_likes }} <div style="display: inline"></div> </h2>
                 </div>
 
-                <a href="{% url 'index' %}" class="btn btn-lg btn btn-success" style="width: 300px; margin-left: 120px ">
+                <a href="{% url 'confirm_order_customer' pk=food.pk %}" class="btn btn-lg btn btn-success" style="width: 300px; margin-left: 120px ">
                     <span><i class="fas fa-dollar-sign"></i></span> Order Now</a>
 
             </div>
