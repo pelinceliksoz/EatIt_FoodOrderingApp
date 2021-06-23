@@ -106,6 +106,7 @@ class DeleteFood(View):
         food.delete()
         return redirect('restaurant_main_page')
 
+
 # ORDER DİYE TABLO OLUŞTURUP YAPICAM HER ŞEY DEĞİŞECEK O YÜZDEN ŞİMDİLİK BÖYLE
 class RestaurantShowOrders(View):
 

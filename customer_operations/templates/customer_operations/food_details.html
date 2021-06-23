@@ -15,7 +15,8 @@
 
 
                 <div >
-                    <img src="../../../static/images/eatit.jpeg" alt="course image" width="250" height="250" >
+                    <h2 style="text-align: center"> {{ food.food_name }} <div style="display: inline"></div> </h2>
+                    <img src="../../../static/images/eatit.jpeg" alt="course image" width="200" height="200" >
                     <h2 style="text-align: center"> Total Likes: {{ total_likes }} <div style="display: inline"></div> </h2>
                 </div>
 
@@ -46,7 +47,7 @@
                                 <td>{{ food.food_name }}</td>
                                 <td>{{ food.category }}</td>
                                 <td>{{ food.price }}</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Make Comment</a>
+                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'make_comment' pk=food.pk %}">Make Comment</a>
                                 <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">See Comments</a></td>
                           </tr>
                   </tbody>

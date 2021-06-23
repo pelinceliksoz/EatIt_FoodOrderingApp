@@ -139,3 +139,15 @@ class CustomerRegister(View):
 def index(request):
 
     return render(request, 'djangoP/index.html')
+
+class ShowProfile(View):
+
+    def get(self, request):
+
+        user = request.user
+        custom_user = CustomUser.objects.get(user=user)
+        context = {
+            'user': user,
+            'custom_user': custom_user
+        }
+        return render(request, 'accounts/show_profile.html', context)

@@ -1,6 +1,7 @@
 from django.db import models
 from restaurant_operations.models import Restaurant
 from customer_operations.models import Customer
+from datetime import datetime
 
 
 class Food(models.Model):
@@ -17,3 +18,13 @@ class Food(models.Model):
 
     def __str__(self):
         return self.food_name
+
+
+class Comment(models.Model):
+    date = models.DateField(default=datetime.now)
+    content = models.CharField(max_length=1000, null=True)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content

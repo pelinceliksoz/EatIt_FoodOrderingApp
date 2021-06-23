@@ -170,6 +170,18 @@ class RemoveOrder(View):
 #         remove_relation_post(request, pk, 'customer_show_orders', relation_food.orders)
 
 
+#COMMON'DAKİ MAKECOMMENTFORM VE COMMENT MODELİNİ KULLANARAK YAP.
+class MakeComment(View):
+
+    def get(self,request, pk):
+        food = Food.objects.get(id=pk)
+        context = {
+            'food': food
+        }
+
+        return render(request, 'customer_operations/make_comment.html', context)
+
+
 
 
 

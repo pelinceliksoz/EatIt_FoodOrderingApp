@@ -16,6 +16,7 @@ urlpatterns = [
     path('accounts/logout', views.Logout.as_view(), name='logout'),
     path('restaurant_operations/', include(restaurant_operations.urls)),
     path('customer_operations/', include(customer_operations.urls)),
+    path('accounts/show_profile', views.ShowProfile.as_view(), name='show_profile'),
     path('common/', include(common.urls))
 
 ]
