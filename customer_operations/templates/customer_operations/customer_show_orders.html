@@ -36,7 +36,7 @@
               <tr>
                     <td>{{ food.food_name }}</td>
                     <td>{{ food.restaurant.restaurant_name }}</td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index'  %}">Remove Order</a></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'remove_order' pk=food.pk  %}">Remove Order</a></td>
 
 
               </tr>

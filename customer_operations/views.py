@@ -120,6 +120,60 @@ class CustomerShowOrders(View):
         return render(request, 'customer_operations/customer_show_orders.html', context)
 
 
+class RemoveOrder(View):
+
+    def get(self, request, pk):
+        food = Food.objects.get(id=pk)
+        context = {
+            'food': food
+        }
+        return render(request, 'customer_operations/remove_order.html', context)
+
+    def post(self, request, pk):
+        food = Food.objects.get(id=pk)
+        customer = Customer.objects.get(pk=request.user.customuser.customer.pk)
+        food.orders.remove(customer)
+
+        return redirect('customer_show_orders')
+
+
+
+# TO ELIMINATE THE REPETITION OF THE REMOVE RELATIONS BUT I GAVE ERROR. I WILL TRY IT LATER.
+# def remove_relation_get(relation_food, request, pk, get_url):
+#
+#     if request.method == 'GET':
+#         food = relation_food
+#         context = {
+#             'food': food
+#         }
+#         return render(request, get_url, context)
+#
+#
+# def remove_relation_post(request, pk, post_redirect, relation):
+#
+#     if request.method == 'POST':
+#         customer = Customer.objects.get(pk=request.user.customuser.customer.pk)
+#         relation.remove(customer)
+#         return redirect(post_redirect)
+#
+#
+# class RemoveOrder(View):
+#
+#     def get(self, request, pk):
+#
+#         relation_food = Food.objects.get(id=pk)
+#         remove_relation_get(relation_food, request, pk, 'customer_operations/remove_order.html')
+#
+#     def post(self, request, pk):
+#
+#         relation_food = Food.objects.get(id=pk)
+#         remove_relation_post(request, pk, 'customer_show_orders', relation_food.orders)
+
+
+
+
+
+
 
 
 

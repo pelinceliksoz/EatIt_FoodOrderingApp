@@ -106,6 +106,28 @@ class DeleteFood(View):
         food.delete()
         return redirect('restaurant_main_page')
 
+# ORDER DİYE TABLO OLUŞTURUP YAPICAM HER ŞEY DEĞİŞECEK O YÜZDEN ŞİMDİLİK BÖYLE
+class RestaurantShowOrders(View):
+
+    def get(self, request):
+        context = {}
+        return render(request, 'restaurant_operations/restaurant_show_orders.html', context)
+
+
+
+
+
+#     def get(self, request):
+#
+#         customer_name = Customer.objects.get(pk=request.user.customuser.customer.pk)
+#         ordered_foods = Food.objects.filter(orders=request.user.customuser.customer)
+#
+#         context = {
+#             'customer_name': customer_name,
+#             'ordered_foods': ordered_foods
+#         }
+#         return render(request, 'customer_operations/customer_show_orders.html', context)
+
 
 
 
