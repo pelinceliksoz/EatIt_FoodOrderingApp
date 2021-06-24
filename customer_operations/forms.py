@@ -3,6 +3,8 @@ from accounts.models import User
 from common.models import Comment
 from django.contrib.auth.forms import UserCreationForm
 
+from customer_operations.models import Customer
+
 
 class CreateCustomerForm(UserCreationForm):
     phone = forms.IntegerField()
@@ -10,19 +12,13 @@ class CreateCustomerForm(UserCreationForm):
     address = forms.CharField()
 
     class Meta:
-
         model = User
         fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']
 
 
-class MakeCommentForm(forms.Form):
+class MakeCommentForm(forms.ModelForm):
     content = forms.CharField()
 
     class Meta:
-
         model = Comment
         fields = ['content']
-
-
-
-

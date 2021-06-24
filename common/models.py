@@ -21,7 +21,7 @@ class Food(models.Model):
 
 
 class Comment(models.Model):
-    date = models.DateField(default=datetime.now)
+    date = models.DateField(default=datetime.now, null=True)
     content = models.CharField(max_length=1000, null=True)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

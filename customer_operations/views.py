@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from common.models import Food
+from customer_operations.forms import MakeCommentForm
 from restaurant_operations.models import Restaurant
 from customer_operations.models import Customer
 from django.urls import reverse
@@ -170,19 +171,57 @@ class RemoveOrder(View):
 #         remove_relation_post(request, pk, 'customer_show_orders', relation_food.orders)
 
 
-#COMMON'DAKİ MAKECOMMENTFORM VE COMMENT MODELİNİ KULLANARAK YAP.
 class MakeComment(View):
 
-    def get(self,request, pk):
+    def get(self, request, pk):
+
         food = Food.objects.get(id=pk)
+        form = MakeCommentForm()
         context = {
-            'food': food
+            'food': food,
+            'form': form
         }
 
         return render(request, 'customer_operations/make_comment.html', context)
 
+    def post(self, request, pk):
+
+        form = MakeCommentForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            food = Food.objects.get(id=pk)
+            customer = request.user.customuser.customer
+            comment.customer = customer
+            comment.food = food
+            comment.save()
+
+            return redirect('/')
+        else:
+            return redirect('/')
 
 
+
+#     def post(self, request, restaurant_id):
+#
+#         form = AddFoodForm(request.POST)
+#
+#         if form.is_valid():
+#             food = form.save()
+#             restaurant = Restaurant.objects.get(user_id=restaurant_id)
+#             food.restaurant = restaurant
+#             food.save()
+#
+#             context = {
+#                 'restaurant': restaurant
+#             }
+#
+#             return redirect('restaurant_main_page')
+#         else:
+#             return redirect('/')
+#
+#
+#
 
 
 

@@ -151,3 +151,36 @@ class ShowProfile(View):
             'custom_user': custom_user
         }
         return render(request, 'accounts/show_profile.html', context)
+
+#EKSİK ÇALIŞIYOR
+class UpdateProfile(View):
+
+    def get(self, request):
+
+        user = request.user
+        customer = Customer.objects.get(user__user=user)
+
+        customer_form = CreateCustomerForm(instance=user)
+        context = {
+            'user': user,
+            'form': customer_form
+        }
+        return render(request, 'accounts/update_profile.html', context)
+
+    def post(self, request):
+        print(request.POST)
+        user = request.user
+        custom_user = CustomUser.objects.get(user=user)
+        customer = Customer.objects.get(user=custom_user)
+        customer_form = CreateCustomerForm(request.POST, instance=user)
+
+        if customer_form.is_valid():
+            customer_form.save()
+            return redirect('show_profile')
+
+        context = {
+            'form': customer_form
+        }
+        return render(request, 'accounts/update_profile.html', context)
+
+
