@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from common.models import Food
+from common.models import Food, Comment
 from customer_operations.forms import MakeCommentForm
 from restaurant_operations.models import Restaurant
 from customer_operations.models import Customer
@@ -61,15 +61,16 @@ class LikedFoods(View):
 
     def get(self, request):
 
-        customer_name = Customer.objects.get(pk=request.user.customuser.customer.pk)
-        liked_foods = Food.objects.filter(likes=request.user.customuser.customer)
-
-        # customer = Customer.objects.get(user=request.user.customuser.customer)
-        # liked_foods = Food.likes.get(customer=customer)
+        customer = request.user.customuser.customer
+        liked_foods = Food.objects.filter(likes=customer)
+        customer_comments = Comment.objects.filter(customer=customer)
         context = {
-            'customer_name': customer_name,
+            'customer_comments': customer_comments,
+            'customer_name': customer,
             'liked_foods': liked_foods
         }
+        print(context)
+
         return render(request, 'customer_operations/liked_foods.html', context)
 
 
@@ -201,44 +202,34 @@ class MakeComment(View):
             return redirect('/')
 
 
+class ShowCustomerOwnComments(View):
 
-#     def post(self, request, restaurant_id):
-#
-#         form = AddFoodForm(request.POST)
-#
-#         if form.is_valid():
-#             food = form.save()
-#             restaurant = Restaurant.objects.get(user_id=restaurant_id)
-#             food.restaurant = restaurant
-#             food.save()
-#
-#             context = {
-#                 'restaurant': restaurant
-#             }
-#
-#             return redirect('restaurant_main_page')
-#         else:
-#             return redirect('/')
-#
-#
-#
+    def get(self, request):
+
+        customer = request.user.customuser.customer
+        customer_comments = Comment.objects.filter(customer=customer)
+        context = {
+            'customer_comments': customer_comments,
+        }
+        print(context)
+        return render(request, 'customer_operations/liked_foods.html', context)
 
 
+class RemoveComment(View):
 
+    def get(self, request, pk):
 
+        comment = Comment.objects.get(pk=pk)
+        context = {
+            'comment': comment
+        }
+        return render(request, 'customer_operations/remove_comment.html', context)
 
+    def post(self, request, pk):
 
-
-
-
-
-
-
-
-
-
-
-
+        comment = Comment.objects.get(pk=pk)
+        comment.delete()
+        return redirect('liked_foods')
 
 
 

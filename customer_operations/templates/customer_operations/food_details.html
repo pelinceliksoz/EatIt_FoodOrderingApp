@@ -48,7 +48,7 @@
                                 <td>{{ food.category }}</td>
                                 <td>{{ food.price }}</td>
                                 <td><a class="btn btn-sm btn-outline-primary" href="{% url 'make_comment' pk=food.pk %}">Make Comment</a>
-                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">See Comments</a></td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'see_comments' pk=food.pk %}">See Comments</a></td>
                           </tr>
                   </tbody>
             </table>
