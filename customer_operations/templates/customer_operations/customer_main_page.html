@@ -39,7 +39,7 @@
               <tr>
                     <td>{{ restaurant.restaurant_name }}</td>
                     <td>{{ restaurant.category }}</td>
-                    <td><a class="btn btn-sm btn-success" href="{% url 'restaurant_menu' pk=restaurant.user_id %}">Show Menu</a></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'restaurant_menu' pk=restaurant.user_id %}">Show Menu</a></td>
               </tr>
           {% endfor %}
       </tbody>restaurant

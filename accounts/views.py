@@ -152,14 +152,12 @@ class ShowProfile(View):
         }
         return render(request, 'accounts/show_profile.html', context)
 
-#EKSİK ÇALIŞIYOR
+
+#TODO EKSİK ÇALIŞIYOR
 class UpdateProfile(View):
-
     def get(self, request):
-
         user = request.user
         customer = Customer.objects.get(user__user=user)
-
         customer_form = CreateCustomerForm(instance=user)
         context = {
             'user': user,

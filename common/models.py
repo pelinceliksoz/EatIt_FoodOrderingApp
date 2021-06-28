@@ -8,7 +8,7 @@ class Food(models.Model):
     food_name = models.CharField(max_length=80)
     category = models.CharField(max_length=80)
     price = models.FloatField(null=0)
-    description = models.CharField(max_length=80, null=True)
+    description = models.CharField(max_length=8000, null=True)
     restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.SET_NULL)
     likes = models.ManyToManyField(Customer, related_name='restaurant_foods')
     orders = models.ManyToManyField(Customer, related_name='order_foods')
@@ -22,7 +22,7 @@ class Food(models.Model):
 
 class Comment(models.Model):
     date = models.DateField(default=datetime.now, null=True)
-    content = models.CharField(max_length=1000, null=True)
+    content = models.CharField(max_length=8000, null=True)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 

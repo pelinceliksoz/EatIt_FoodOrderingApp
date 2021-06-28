@@ -105,7 +105,7 @@ class ConfirmOrderCustomer(View):
 
         food = Food.objects.get(id=pk)
         food.orders.add(request.user.customuser.customer)
-        return redirect('/')
+        return redirect('food_details', pk=food.pk)
 
 
 class CustomerShowOrders(View):
@@ -197,7 +197,7 @@ class MakeComment(View):
             comment.food = food
             comment.save()
 
-            return redirect('/')
+            return redirect('food_details', pk=food.pk)
         else:
             return redirect('/')
 
