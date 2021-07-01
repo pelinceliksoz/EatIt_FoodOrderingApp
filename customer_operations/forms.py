@@ -1,6 +1,6 @@
 from django import forms
 from accounts.models import User
-from common.models import Comment
+from common.models import Comment, Order
 from django.contrib.auth.forms import UserCreationForm
 
 from customer_operations.models import Customer
@@ -22,3 +22,12 @@ class MakeCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+
+
+class MakeOrderForm(forms.ModelForm):
+    message = forms.TextInput()
+
+    class Meta:
+        model = Order
+        fields = ['message']
+

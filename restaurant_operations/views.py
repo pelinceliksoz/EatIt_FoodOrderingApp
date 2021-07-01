@@ -2,28 +2,26 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 from .forms import AddFoodForm
 from .models import Restaurant
-from common.models import Food
+from common.models import Food,Order
 from django.views import View
 
 
-class RestaurantMainPage(View):
-
+class RestaurantMainPageView(View):
     def get(self, request):
-
+        form = AddFoodForm()
         user_id = request.user.id
         restaurant = Restaurant.objects.get(user__user_id=user_id)
         restaurant_foods = Food.objects.filter(restaurant=restaurant)
         context = {
+            'form': form,
             'restaurant': restaurant,
             'foods': restaurant_foods
         }
         return render(request, 'restaurant_operations/restaurant_main_page.html', context)
 
 
-class AddFood(View):
-
+class AddFoodView(View):
     def get(self, request, restaurant_id):
-
         restaurant = Restaurant.objects.get(user_id=restaurant_id)
         form = AddFoodForm()
         context = {
@@ -33,9 +31,7 @@ class AddFood(View):
         return render(request, "restaurant_operations/add_food.html", context)
 
     def post(self, request, restaurant_id):
-
         form = AddFoodForm(request.POST)
-
         if form.is_valid():
             food = form.save()
             restaurant = Restaurant.objects.get(user_id=restaurant_id)
@@ -45,16 +41,13 @@ class AddFood(View):
             context = {
                 'restaurant': restaurant
             }
-
             return redirect('restaurant_main_page')
         else:
             return redirect('/')
 
 
-class RestaurantMenu(View):
-
+class RestaurantMenuView(View):
     def get(self, request, pk):
-
         requested_restaurant = Restaurant.objects.get(user_id=pk)
         foods = Food.objects.filter(restaurant=requested_restaurant)
         context = {
@@ -64,10 +57,8 @@ class RestaurantMenu(View):
         return render(request, 'restaurant_operations/restaurant_menu.html', context)
 
 
-class UpdateFood(View):
-
+class UpdateFoodView(View):
     def get(self, request, pk):
-
         food = Food.objects.get(id=pk)
         form = AddFoodForm(instance=food)
         context = {
@@ -77,14 +68,11 @@ class UpdateFood(View):
         return render(request, 'restaurant_operations/update_food.html', context)
 
     def post(self, request, pk):
-
         food = Food.objects.get(pk=pk)
         form = AddFoodForm(request.POST, instance=food)
-
         if form.is_valid():
             form.save()
             return redirect('restaurant_main_page')
-
         context = {
             'food': food,
             'form': form
@@ -92,8 +80,7 @@ class UpdateFood(View):
         return render(request, 'restaurant_operations/update_food.html', context)
 
 
-class DeleteFood(View):
-
+class DeleteFoodView(View):
     def get(self, request, pk):
         food = Food.objects.get(id=pk)
         context = {
@@ -107,28 +94,15 @@ class DeleteFood(View):
         return redirect('restaurant_main_page')
 
 
-# ORDER DİYE TABLO OLUŞTURUP YAPICAM HER ŞEY DEĞİŞECEK O YÜZDEN ŞİMDİLİK BÖYLE
-class RestaurantShowOrders(View):
-
+class RestaurantShowOrdersView(View):
     def get(self, request):
-        context = {}
+        restaurant = request.user.customuser.restaurant
+        orders = Order.objects.filter(food__restaurant=restaurant)
+        context = {
+            'restaurant': restaurant,
+            'orders': orders
+        }
         return render(request, 'restaurant_operations/restaurant_show_orders.html', context)
-
-
-
-
-
-#     def get(self, request):
-#
-#         customer_name = Customer.objects.get(pk=request.user.customuser.customer.pk)
-#         ordered_foods = Food.objects.filter(orders=request.user.customuser.customer)
-#
-#         context = {
-#             'customer_name': customer_name,
-#             'ordered_foods': ordered_foods
-#         }
-#         return render(request, 'customer_operations/customer_show_orders.html', context)
-
 
 
 

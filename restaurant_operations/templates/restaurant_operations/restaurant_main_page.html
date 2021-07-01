@@ -1,15 +1,13 @@
 {%  extends 'djangoP/main.html' %}
 {% block content %}
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
-{#<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">#}
-{#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+     <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Welcome
     </title>
 
@@ -19,7 +17,35 @@
 <br>
 
 <a class="btn btn-sm btn-info" href="{% url 'restaurant_show_orders'  %}">Show Orders</a>
-<a class="btn btn-sm btn-success" href="{% url 'add_food' restaurant_id=restaurant.user_id %}">Add Food</a>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modal_add_food">
+    Add Food
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_add_food" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Food</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'add_food' restaurant_id=restaurant.user_id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    <div class="d-flex justify-content-left mt-100 login_container">
+                        <input class="btn btn-primary" type="submit" value="Create">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class = "jumbotron text-center" >
@@ -46,11 +72,42 @@
                     <td>{{ food.category }}</td>
                     <td>{{ food.description }}</td>
                     <td>{{ food.price }}</td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'update_food' pk=food.pk%}">Update</a></td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'delete_food' pk=food.pk %}">Delete</a></td>
+                    <td><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_update_food_{{ food.id }}">
+                        Update
+                    </button></td>
+
+                    <!-- Button trigger modal -->
+                    <td><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#delete_food-{{ food.id }}">
+                        Delete
+                    </button></td>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="delete_food-{{ food.id }}" tabindex="-1" aria-labelledby="deleteFoodModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deleteFoodModalLabel">Delete Food</h5>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                  <span>&times;</span>
+                              </button>
+
+                          </div>
+                          <div class="modal-body">
+                            Are you sure to delete the {{ food.food_name }}?
+                          </div>
+                          <div class="modal-footer">
+                            <form action="{% url 'delete_food' pk=food.pk %}" method="POST">
+                                {% csrf_token %}
+                                <input class="btn btn-primary" type="submit" value="Delete">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </form>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <td><a class="btn btn-sm btn-outline-primary" href="{% url 'see_comments' pk=food.pk %}">See Comments</a></td>
-
-
               </tr>
           {% endfor %}
       </tbody>
@@ -62,6 +119,43 @@
       </tfoot>
     </table>
 
+          {% for food in foods %}
+
+                <div class="modal fade" id="modal_update_food_{{ food.id }}" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Update Food</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'update_food' pk=food.pk %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+
+                                    <label for="id_food_name">Food name:</label><input type="text" name="food_name" maxlength="80" required="" id="id_food_name" class=" form-control" value="{{ food.food_name }}">
+                                    <label for="id_category">Category:</label><input type="text" name="category" maxlength="80" required="" id="id_category" class=" form-control" value="{{ food.category }}">
+                                    <label for="id_price">Price:</label><input type="number" name="price" step="any" required="" id="id_price" class=" form-control" value="{{ food.price }}">
+                                    <label for="id_description">Description:</label><input type="text" name="description" maxlength="8000" required="" id="id_description" class=" form-control" value="{{ food.description }}">
+
+
+                                    <div class="d-flex justify-content-center mt-3 login_container">
+                                        <input class="btn btn-primary" type="submit" value="Update">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{% endfor %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
+
 <script>
 $(document).ready(function() {
     $('#products').DataTable();
@@ -71,6 +165,21 @@ $(document).ready(function() {
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script>
+		var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Food Name...';
+		form_fields[2].placeholder='Category...';
+		form_fields[3].placeholder='Food Name...';
+		form_fields[4].placeholder='Category...';
+		form_fields[5].placeholder='Price...';
+		form_fields[6].placeholder='Description...';
+
+		for (var field in form_fields){
+			form_fields[field].className += ' form-control'
+		}
+</script>
 </body>
 </html>
 

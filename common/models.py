@@ -28,3 +28,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class Order(models.Model):
+    date = models.DateField(default=datetime.now, null=True)
+    message = models.TextField(max_length=8000, null=True)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

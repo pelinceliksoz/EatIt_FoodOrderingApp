@@ -14,41 +14,35 @@ from customer_operations.forms import CreateCustomerForm
 from django.views import View
 
 
-class Home(View):
-
+class HomeView(View):
     def get(self, request):
-
         return render(request, 'djangoP/home.html', {'name': 'Eat It!'});
 
 
-def login(request):
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = auth.authenticate(username=username, password=password)
-
-        if user is not None:
-            auth.login(request,user)
-
-            uid = request.user.id
-            print(uid)
-
-            # restaurant login
-            if get_user_type(uid) == 1:
-                return redirect('restaurant_main_page')
-            # customer login
-            else:
-                return redirect('customer_main_page')
-
-        else:
-            messages.info(request, 'invalid credentials')
-            print('invalid credentials')
-            return redirect('login')
-    else:
+class LoginView(View):
+    def get(self, request):
         return render(request, 'accounts/login.html')
 
+    def post(self, request):
+            username = request.POST['username']
+            password = request.POST['password']
+
+            user = auth.authenticate(username=username, password=password)
+
+            if user is not None:
+                auth.login(request,user)
+                uid = request.user.id
+                print(uid)
+                # restaurant login
+                if get_user_type(uid) == 1:
+                    return redirect('restaurant_main_page')
+                # customer login
+                else:
+                    return redirect('customer_main_page')
+            else:
+                messages.info(request, 'invalid credentials')
+                print('invalid credentials')
+                return redirect('login')
 
 # Returns:
 # 1 if restaurant
@@ -60,27 +54,21 @@ def get_user_type(uid):
         return 2
 
 
-class Logout(View):
-
+class LogoutView(View):
     def get(self, request):
-
         auth.logout(request)
         return redirect('/')
 
 
-class RestaurantRegister(View):
-
+class RestaurantRegisterView(View):
     def get(self, request):
-
         form = CreateRestaurantForm()
-
         context = {
             'form': form
         }
         return render(request, "accounts/restaurant_register.html", context)
 
     def post(self, request):
-
         form = CreateRestaurantForm(request.POST)
 
         if form.is_valid():
@@ -103,19 +91,15 @@ class RestaurantRegister(View):
             return redirect('/')
 
 
-class CustomerRegister(View):
-
+class CustomerRegisterView(View):
     def get(self, request):
-
         form = CreateCustomerForm()
-
         context = {
             'form': form
         }
         return render(request, "accounts/customer_register.html", context)
 
     def post(self, request):
-
         form = CreateCustomerForm(request.POST)
 
         if form.is_valid():
@@ -136,25 +120,22 @@ class CustomerRegister(View):
             return redirect('/')
 
 
-def index(request):
-
-    return render(request, 'djangoP/index.html')
-
-class ShowProfile(View):
-
+class ShowProfileView(View):
     def get(self, request):
-
         user = request.user
         custom_user = CustomUser.objects.get(user=user)
+        customer_form = CreateCustomerForm(instance=user)
+
         context = {
             'user': user,
-            'custom_user': custom_user
+            'custom_user': custom_user,
+            'form': customer_form
         }
         return render(request, 'accounts/show_profile.html', context)
 
 
 #TODO EKSİK ÇALIŞIYOR
-class UpdateProfile(View):
+class UpdateProfileView(View):
     def get(self, request):
         user = request.user
         customer = Customer.objects.get(user__user=user)
@@ -180,5 +161,9 @@ class UpdateProfile(View):
             'form': customer_form
         }
         return render(request, 'accounts/update_profile.html', context)
+
+
+def index(request):
+    return render(request, 'djangoP/index.html')
 
 

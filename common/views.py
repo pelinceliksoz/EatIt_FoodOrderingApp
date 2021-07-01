@@ -5,16 +5,14 @@ from .models import Comment, Food
 from restaurant_operations.models import Restaurant
 
 
-def searchRestaurant(request):
+class SearchRestaurant(View):
+    def get(self,request):
+        context = {}
+        return render(request, 'common/search_restaurant.html', context)
 
-    context = {}
-    return render(request, 'common/search_restaurant.html', context)
 
-
-class SeeComments(View):
-
+class SeeCommentsView(View):
     def get(self, request, pk):
-
         food = Food.objects.get(pk=pk)
         comments = Comment.objects.filter(food=food)
         context = {

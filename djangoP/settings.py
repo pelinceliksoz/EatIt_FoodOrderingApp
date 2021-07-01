@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'accounts',
     'customer_operations',
     'restaurant_operations',
-    'common'
+    'common',
+    'bootstrap_modal_forms'
 ]
 
 MIDDLEWARE = [

@@ -5,7 +5,9 @@
     <link rel="stylesheet" href='{% static "style/rateStar.css"%}'>
     <html lang="en">
         <head>
-            <meta charset="UTF-8">
+             <!-- Required meta tags -->
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
             <div class="well well-sm Leanor" style="display: flex; justify-content: center; background: #e9e9f5!important;">
                 <form action="{% url 'like_food' pk=food.pk %}" method="POST">
                     {% csrf_token %}
@@ -19,8 +21,34 @@
                     <h2 style="text-align: center"> Total Likes: {{ total_likes }} <div style="display: inline"></div> </h2>
                 </div>
 
-                <a href="{% url 'confirm_order_customer' pk=food.pk %}" class="btn btn-lg btn btn-success" style="width: 300px; margin-left: 120px ">
-                    <span><i class="fas fa-dollar-sign"></i></span> Order Now</a>
+                 <button type="button" class="btn btn-lg btn btn-success" style="width: 300px; margin-left: 120px " data-bs-toggle="modal" data-bs-target="#modal_order_food_{{ food.id }}">
+                        <span><i class="fas fa-dollar-sign"></i></span> Order Now</a>
+                 </button>
+                 <div class="modal fade" id="modal_order_food_{{ food.id }}" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="orderModalLabel">Order {{ food }}</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'make_order' pk=food.pk %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    If you want to order {{ food }} please bring a message to confirm it. (Please also let us know if you want to change anything in your ordering food.)
+                                    <br>
+                                    {{ order_form }}
+                                    <div class="d-flex justify-content-center mt-3 login_container">
+                                        <input class="btn btn-primary" type="submit" value="Order">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </head>
@@ -47,17 +75,45 @@
                                 <td>{{ food.food_name }}</td>
                                 <td>{{ food.category }}</td>
                                 <td>{{ food.price }}</td>
-                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'make_comment' pk=food.pk %}">Make Comment</a>
+                                <td><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal_make_comment_{{ food.id }}">
+                                     Make Comment
+                                </button></td>
                                 <td><a class="btn btn-sm btn-outline-primary" href="{% url 'see_comments' pk=food.pk %}">See Comments</a></td>
                           </tr>
                   </tbody>
             </table>
+             <div class="modal fade" id="modal_make_comment_{{ food.id }}" tabindex="-1" aria-labelledby="makeCommentModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="makeCommentModalLabel">Comment on {{ food }}</h5>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" action="{% url 'make_comment' pk=food.pk %}" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    Give your comment on {{ food }} here:
+                                                    <br>
+                                                    {{ comment_form }}
+                                                    <div class="d-flex justify-content-center mt-3 login_container">
+                                                        <input class="btn btn-primary" type="submit" value="Save">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
             <div class="card card-body">
                 <h2 style="text-align: center">Food Description</h2>
             </div>
             <div class="card card-body">
                 <p style="text-align: center"><strong>{{ food.description }}</strong></p>
             </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         </body>
     </html>
 

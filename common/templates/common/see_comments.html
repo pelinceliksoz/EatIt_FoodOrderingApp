@@ -1,27 +1,19 @@
 {%  extends 'djangoP/main.html' %}
 {% block content %}
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
-{#<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">#}
-{#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">#}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
-
+    <title>See Comments</title>
 </head>
 <body>
 <br>
 
-<a class="btn btn-sm btn-outline-primary" href="{% url 'index'  %}">Show Orders</a>
-
 <div class = "jumbotron text-center" >
     <h1> Hey {{ customer_name }}!</h1>
 
-    <h3>Your ordered foods are below:</h3>
+    <h3>Comments are below:</h3>
     <hr>
 
     <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -34,9 +26,8 @@
       <tbody>
           {% for comment in comments %}
               <tr>
-                    <td>{{ comment.customer }}</td>
+                    <td><a href="{% url 'index' %}">{{ comment.customer }}</a></td>
                     <td>{{ comment.content }}</td>
-
               </tr>
           {% endfor %}
       </tbody>
@@ -44,17 +35,16 @@
             <th>Customer Name</th>
             <th>Comment</th>
     </table>
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
 <script>
 $(document).ready(function() {
     $('#products').DataTable();
 } );
 
 </script>
-
 </div>
-
 </body>
 </html>
-
 {% endblock %}
+
