@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
-from .forms import AddFoodForm
+from .forms import AddFoodForm, ChangeOrderStatusForm
 from .models import Restaurant
 from common.models import Food,Order
 from django.views import View
@@ -98,11 +98,33 @@ class RestaurantShowOrdersView(View):
     def get(self, request):
         restaurant = request.user.customuser.restaurant
         orders = Order.objects.filter(food__restaurant=restaurant)
+        form = ChangeOrderStatusForm(request.POST)
         context = {
             'restaurant': restaurant,
-            'orders': orders
+            'orders': orders,
+            'form': form
         }
         return render(request, 'restaurant_operations/restaurant_show_orders.html', context)
 
 
+class ChangeOrderStatusView(View):
+    def get(self, request, pk):
+        order = Order.objects.get(id=pk)
+        form = ChangeOrderStatusForm(instance=order)
+        context = {
+            'form': form,
+            'order': order
+        }
+        return render(request, 'restaurant_operations/change_order_status.html', context)
 
+    def post(self, request, pk):
+        order = Order.objects.get(pk=pk)
+        form = ChangeOrderStatusForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('restaurant_show_orders')
+        context = {
+            'order': order,
+            'form': form
+        }
+        return render(request, 'restaurant_operations/restaurant_show_orders.html', context)

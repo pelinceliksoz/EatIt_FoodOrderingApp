@@ -164,6 +164,7 @@ class MakeOrderView(View):
             customer = request.user.customuser.customer
             order.customer = customer
             order.food = food
+            order.status = 'Pending'
             order.save()
             return redirect('food_details', pk=food.pk)
         else:

@@ -31,7 +31,14 @@ class Comment(models.Model):
 
 
 class Order(models.Model):
-    date = models.DateField(default=datetime.now, null=True)
+    STATUS = (
+        ('Pending', 'Pending'),
+        ('Out for delivery', 'Out for delivery'),
+        ('Delivered', 'Delivered'),
+    )
+    date = models.DateTimeField(default=datetime.now, null=True)
     message = models.TextField(max_length=8000, null=True)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    status = models.CharField(max_length=200, null=True, choices=STATUS)
+

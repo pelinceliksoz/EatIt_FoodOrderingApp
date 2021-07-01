@@ -71,16 +71,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for progress,course in created_courses %}
+                {% for order in orders %}
+                    {% if order.status == 'Delivered' %}
                     <tr>
-
-                        <td>{{ course.0 }}</td>
-                        <td>{{ course.1 }}</td>
-                        <td>{{ course.2 }}</td>
-                        <td>{{ course.3 }}</td>
+                        <td>{{ order.food.restaurant.restaurant_name }}</td>
+                        <td>{{ order.food }}</td>
+                        <td>{{ order.date }}</td>
+                        <td>{{ order.food.price }}</td>
+                        <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Like</a></td>
+                        <td><a class="btn btn-sm btn-outline-primary" href="{% url 'make_comment' pk=order.food.pk %}">Make Comment</a></td>
                         <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Order Again</a></td>
-
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>

@@ -9,5 +9,6 @@ urlpatterns = [
     path('update_food/<int:pk>/', views.UpdateFoodView.as_view(), name='update_food'),
     path('delete_food/<int:pk>/', views.DeleteFoodView.as_view(), name='delete_food'),
     path('restaurant_show_orders', views.RestaurantShowOrdersView.as_view(), name='restaurant_show_orders'),
+    path('change_order_status/<int:pk>/', views.ChangeOrderStatusView.as_view(), name='change_order_status'),
 
 ]

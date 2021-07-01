@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
 from django.views.generic import TemplateView
-
+from common.models import Order
 from accounts.models import CustomUser
 from restaurant_operations.models import Restaurant
 from customer_operations.models import Customer
@@ -124,12 +124,15 @@ class ShowProfileView(View):
     def get(self, request):
         user = request.user
         custom_user = CustomUser.objects.get(user=user)
+        customer = Customer.objects.get(user=custom_user)
+        orders = Order.objects.filter(customer=customer)
         customer_form = CreateCustomerForm(instance=user)
 
         context = {
             'user': user,
             'custom_user': custom_user,
-            'form': customer_form
+            'form': customer_form,
+            'orders': orders
         }
         return render(request, 'accounts/show_profile.html', context)
 

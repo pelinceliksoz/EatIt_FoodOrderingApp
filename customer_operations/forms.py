@@ -3,6 +3,7 @@ from accounts.models import User
 from common.models import Comment, Order
 from django.contrib.auth.forms import UserCreationForm
 
+
 from customer_operations.models import Customer
 
 
@@ -30,4 +31,3 @@ class MakeOrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['message']
-
