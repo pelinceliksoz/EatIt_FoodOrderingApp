@@ -20,7 +20,7 @@ class CreateRestaurantForm(UserCreationForm):
 class AddFoodForm(ModelForm):
     class Meta:
         model = Food
-        fields = ['food_name', 'category', 'price', 'description']
+        fields = ['food_name', 'category', 'price', 'description', 'food_pic']
 
 
 class ChangeOrderStatusForm(ModelForm):

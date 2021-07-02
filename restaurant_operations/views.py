@@ -12,6 +12,7 @@ class RestaurantMainPageView(View):
         user_id = request.user.id
         restaurant = Restaurant.objects.get(user__user_id=user_id)
         restaurant_foods = Food.objects.filter(restaurant=restaurant)
+
         context = {
             'form': form,
             'restaurant': restaurant,
@@ -31,8 +32,9 @@ class AddFoodView(View):
         return render(request, "restaurant_operations/add_food.html", context)
 
     def post(self, request, restaurant_id):
-        form = AddFoodForm(request.POST)
+        form = AddFoodForm(request.POST, request.FILES)
         if form.is_valid():
+            print(form.cleaned_data)
             food = form.save()
             restaurant = Restaurant.objects.get(user_id=restaurant_id)
             food.restaurant = restaurant
@@ -43,7 +45,9 @@ class AddFoodView(View):
             }
             return redirect('restaurant_main_page')
         else:
-            return redirect('/')
+            print(form.errors)
+            return
+            #return redirect('/')
 
 
 class RestaurantMenuView(View):
@@ -128,3 +132,4 @@ class ChangeOrderStatusView(View):
             'form': form
         }
         return render(request, 'restaurant_operations/restaurant_show_orders.html', context)
+

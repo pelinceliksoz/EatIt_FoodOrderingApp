@@ -3,6 +3,7 @@ from django.views import View
 from common.models import Food, Comment, Order
 from customer_operations.forms import MakeCommentForm,MakeOrderForm
 from restaurant_operations.models import Restaurant
+from accounts.models import CustomUser
 from customer_operations.models import Customer
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -26,11 +27,12 @@ class FoodDetailsView(View):
         total_likes = stuff.total_likes()
         order_form = MakeOrderForm()
         comment_form = MakeCommentForm()
+
         context = {
             'food': food,
             'total_likes': total_likes,
             'order_form': order_form,
-            'comment_form': comment_form
+            'comment_form': comment_form,
         }
         return render(request, 'customer_operations/food_details.html', context)
 

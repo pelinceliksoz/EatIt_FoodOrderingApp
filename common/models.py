@@ -12,6 +12,8 @@ class Food(models.Model):
     restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.SET_NULL)
     likes = models.ManyToManyField(Customer, related_name='restaurant_foods')
     orders = models.ManyToManyField(Customer, related_name='order_foods')
+    food_pic = models.ImageField()
+
 
     def total_likes(self):
         return self.likes.count()
