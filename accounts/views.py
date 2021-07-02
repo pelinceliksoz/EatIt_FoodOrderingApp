@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from .forms import CustomUserForm
 from restaurant_operations.forms import CreateRestaurantForm
-from customer_operations.forms import CreateCustomerForm
+from customer_operations.forms import CreateCustomerForm, MakeCommentForm,MakeOrderForm
 from django.views import View
 
 
@@ -127,12 +127,16 @@ class ShowProfileView(View):
         customer = Customer.objects.get(user=custom_user)
         orders = Order.objects.filter(customer=customer)
         customer_form = CreateCustomerForm(instance=user)
+        comment_form = MakeCommentForm()
+        order_form = MakeOrderForm()
 
         context = {
             'user': user,
             'custom_user': custom_user,
             'form': customer_form,
-            'orders': orders
+            'orders': orders,
+            'comment_form': comment_form,
+            'order_form': order_form
         }
         return render(request, 'accounts/show_profile.html', context)
 

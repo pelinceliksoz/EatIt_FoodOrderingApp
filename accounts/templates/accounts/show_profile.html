@@ -68,6 +68,10 @@
                     <th>Order Date</th>
                     <th>Price</th>
                     <th></th>
+                    <th></th>
+                    <th></th>
+
+
                 </tr>
                 </thead>
                 <tbody>
@@ -79,14 +83,71 @@
                         <td>{{ order.date }}</td>
                         <td>{{ order.food.price }}</td>
                         <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Like</a></td>
-                        <td><a class="btn btn-sm btn-outline-primary" href="{% url 'make_comment' pk=order.food.pk %}">Make Comment</a></td>
-                        <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Order Again</a></td>
+                        <td><button type="button" class="btn btn-lg btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_make_comment_{{ order.food.id }}">
+                            Make Comment
+                        </button></td>
+                        <td><button type="button" class="btn btn-lg btn btn-success"  data-bs-toggle="modal" data-bs-target="#modal_order_food_{{ order.food.id }}">
+                                <span><i class="fas fa-dollar-sign"></i></span> Order Again</a>
+                        </button></td>
                     </tr>
                     {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
+            {% for order in orders %}
+            <div class="modal fade" id="modal_make_comment_{{ order.food.id }}" tabindex="-1" aria-labelledby="makeCommentModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="makeCommentModalLabel">Comment on {{ order.food }}</h5>
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span>&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" action="{% url 'make_comment' pk=order.food.pk %}" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    Give your comment on {{ food }} here:
+                                                    <br>
+                                                    {{ comment_form }}
+                                                    <div class="d-flex justify-content-center mt-3 login_container">
+                                                        <input class="btn btn-primary" type="submit" value="Save">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+             </div>
+                  <div class="modal fade" id="modal_order_food_{{ order.food.id }}" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="orderModalLabel">Order {{ order.food }}</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'make_order' pk=order.food.pk %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    If you want to order {{ order.food }} please bring a message to confirm it. (Please also let us know if you want to change anything in your ordering food.)
+                                    <br>
+                                    {{ order_form }}
+                                    <div class="d-flex justify-content-center mt-3 login_container">
+                                        <input class="btn btn-primary" type="submit" value="Order">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
         </div>
+    {% endfor %}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

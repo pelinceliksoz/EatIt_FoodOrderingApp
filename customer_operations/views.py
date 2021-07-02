@@ -116,7 +116,7 @@ class MakeCommentView(View):
             comment.customer = customer
             comment.food = food
             comment.save()
-            return redirect('food_details', pk=food.pk)
+            return redirect('liked_foods')
         else:
             return redirect('/')
 
@@ -166,7 +166,7 @@ class MakeOrderView(View):
             order.food = food
             order.status = 'Pending'
             order.save()
-            return redirect('food_details', pk=food.pk)
+            return redirect('customer_own_orders')
         else:
             return redirect('/')
 
