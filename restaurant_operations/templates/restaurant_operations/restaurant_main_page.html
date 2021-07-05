@@ -72,9 +72,7 @@
       <tbody>
           {% for food in foods %}
               <tr>
-{#                    <td><img src="/{{ BASIC_DIR }}/{{ food.food_pic.path}}" width="120"/></td>#}
                     <td><img class="menu-image" src= "{{ BASE_DIR }}/static/images/{{ food.food_pic }}" alt="{{ food.food_name }}"   ></td>
-{#                 <td>{{ food.food_pic }}</td>#}
                     <td>{{ food.food_name }}</td>
                     <td>{{ food.category }}</td>
                     <td>{{ food.description }}</td>
