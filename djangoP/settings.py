@@ -130,6 +130,10 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/images/'
 
+
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

@@ -1,17 +1,14 @@
-from django.contrib.auth import authenticate
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User,auth
-from django.views.generic import TemplateView
 from common.models import Order
 from accounts.models import CustomUser
 from restaurant_operations.models import Restaurant
 from customer_operations.models import Customer
 from django.contrib import messages
-from django.http import HttpResponse
-from .forms import CustomUserForm
 from restaurant_operations.forms import CreateRestaurantForm
 from customer_operations.forms import CreateCustomerForm, MakeCommentForm,MakeOrderForm
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeView(View):
@@ -120,8 +117,11 @@ class CustomerRegisterView(View):
             return redirect('/')
 
 
-class ShowProfileView(View):
+class ShowProfileView(LoginRequiredMixin, View):
     def get(self, request):
+        login_url = '/login/'
+        redirect_field_name = 'redirect_to'
+
         user = request.user
         custom_user = CustomUser.objects.get(user=user)
         customer = Customer.objects.get(user=custom_user)
@@ -142,7 +142,7 @@ class ShowProfileView(View):
 
 
 #TODO EKSİK ÇALIŞIYOR
-class UpdateProfileView(View):
+class UpdateProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
         customer = Customer.objects.get(user__user=user)

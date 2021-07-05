@@ -3,13 +3,13 @@ from django.views import View
 from common.models import Food, Comment, Order
 from customer_operations.forms import MakeCommentForm,MakeOrderForm
 from restaurant_operations.models import Restaurant
-from accounts.models import CustomUser
 from customer_operations.models import Customer
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class CustomerMainPageView(View):
+class CustomerMainPageView(LoginRequiredMixin, View):
     def get(self, request):
         user_name = request.user.first_name
         all_restaurants = Restaurant.objects.all().order_by('restaurant_name')
@@ -20,7 +20,7 @@ class CustomerMainPageView(View):
         return render(request, 'customer_operations/customer_main_page.html', context)
 
 
-class FoodDetailsView(View):
+class FoodDetailsView(LoginRequiredMixin, View):
     def get(self, request, pk):
         food = Food.objects.get(pk=pk)
         stuff = get_object_or_404(Food, id=self.kwargs['pk'])
@@ -37,25 +37,14 @@ class FoodDetailsView(View):
         return render(request, 'customer_operations/food_details.html', context)
 
 
-# class MakeCommentView(View):
-#     def get(self, request, pk):
-#         customer = Customer.objects.get(pk=pk)
-#         food = Food.objects.get(pk=pk)
-#         context = {
-#             'customer': customer,
-#             'food': food
-#         }
-#         return render(request, 'customer_operations/food_details.html', context)
-
-
-class LikeView(View):
+class LikeView(LoginRequiredMixin, View):
     def post(self, request, pk):
         food = get_object_or_404(Food, id=request.POST.get('food_pk'))
         food.likes.add(request.user.customuser.customer)
         return HttpResponseRedirect(reverse('food_details', args=[str(pk)]))
 
 
-class LikedFoodsView(View):
+class LikedFoodsView(LoginRequiredMixin, View):
     def get(self, request):
         customer = request.user.customuser.customer
         liked_foods = Food.objects.filter(likes=customer)
@@ -69,7 +58,7 @@ class LikedFoodsView(View):
         return render(request, 'customer_operations/liked_foods.html', context)
 
 
-class RemoveLikeView(View):
+class RemoveLikeView(LoginRequiredMixin, View):
     def get(self, request, pk):
         food = Food.objects.get(id=pk)
         context = {
@@ -84,7 +73,7 @@ class RemoveLikeView(View):
         return redirect('liked_foods')
 
 
-class RemoveOrderView(View):
+class RemoveOrderView(LoginRequiredMixin, View):
     def get(self, request, pk):
         food = Food.objects.get(id=pk)
         context = {
@@ -99,7 +88,7 @@ class RemoveOrderView(View):
         return redirect('customer_show_orders')
 
 
-class MakeCommentView(View):
+class MakeCommentView(LoginRequiredMixin, View):
     def get(self, request, pk):
         food = Food.objects.get(id=pk)
         form = MakeCommentForm()
@@ -123,7 +112,7 @@ class MakeCommentView(View):
             return redirect('/')
 
 
-class ShowCustomerOwnCommentsView(View):
+class ShowCustomerOwnCommentsView(LoginRequiredMixin, View):
     def get(self, request):
         customer = request.user.customuser.customer
         customer_comments = Comment.objects.filter(customer=customer)
@@ -134,7 +123,7 @@ class ShowCustomerOwnCommentsView(View):
         return render(request, 'customer_operations/liked_foods.html', context)
 
 
-class RemoveCommentView(View):
+class RemoveCommentView(LoginRequiredMixin, View):
     def get(self, request, pk):
         comment = Comment.objects.get(pk=pk)
         context = {
@@ -148,7 +137,7 @@ class RemoveCommentView(View):
         return redirect('liked_foods')
 
 
-class MakeOrderView(View):
+class MakeOrderView(LoginRequiredMixin, View):
     def get(self, request, pk):
         food = Food.objects.get(id=pk)
         form = MakeOrderForm()
@@ -173,7 +162,7 @@ class MakeOrderView(View):
             return redirect('/')
 
 
-class ShowCustomerOwnOrdersView(View):
+class ShowCustomerOwnOrdersView(LoginRequiredMixin, View):
     def get(self, request):
         customer = request.user.customuser.customer
         orders = Order.objects.filter(customer=customer)
@@ -185,7 +174,7 @@ class ShowCustomerOwnOrdersView(View):
         return render(request, 'customer_operations/customer_own_orders.html', context)
 
 
-class RemoveOrderCustomerView(View):
+class RemoveOrderCustomerView(LoginRequiredMixin, View):
     def get(self, request, pk):
         order = Order.objects.get(pk=pk)
         context = {
