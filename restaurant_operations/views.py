@@ -132,3 +132,9 @@ class ChangeOrderStatusView(LoginRequiredMixin, View):
         }
         return render(request, 'restaurant_operations/restaurant_show_orders.html', context)
 
+
+class RestaurantLikeComments(View):
+    def get(self, request):
+        context = {}
+        return render(request, 'restaurant_operations/restaurant_likes_comments.html', context)
+

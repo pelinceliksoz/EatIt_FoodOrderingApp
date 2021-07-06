@@ -1,6 +1,7 @@
-from django.shortcuts import render,redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User,auth
-from common.models import Order
+from common.models import Order, Food
 from accounts.models import CustomUser
 from restaurant_operations.models import Restaurant
 from customer_operations.models import Customer
@@ -119,26 +120,38 @@ class CustomerRegisterView(View):
 
 class ShowProfileView(LoginRequiredMixin, View):
     def get(self, request):
-        login_url = '/login/'
-        redirect_field_name = 'redirect_to'
+        # restaurant
+        if (get_user_type(request.user.id) == 1):
+            user = request.user
+            custom_user = CustomUser.objects.get(user=user)
+            restaurant = Restaurant.objects.get(user=custom_user)
+            orders = Order.objects.filter(food__restaurant=restaurant)
+            context = {
+                'user': user,
+                'custom_user': custom_user,
+                'restaurant': restaurant,
+                'orders': orders
+            }
+            return render(request, 'accounts/restaurant_show_profile.html', context)
+        else:
+            user = request.user
+            custom_user = CustomUser.objects.get(user=user)
+            customer = Customer.objects.get(user=custom_user)
+            orders = Order.objects.filter(customer=customer)
+            customer_form = CreateCustomerForm(instance=user)
+            comment_form = MakeCommentForm()
+            order_form = MakeOrderForm()
 
-        user = request.user
-        custom_user = CustomUser.objects.get(user=user)
-        customer = Customer.objects.get(user=custom_user)
-        orders = Order.objects.filter(customer=customer)
-        customer_form = CreateCustomerForm(instance=user)
-        comment_form = MakeCommentForm()
-        order_form = MakeOrderForm()
+            context = {
+                'user': user,
+                'custom_user': custom_user,
+                'form': customer_form,
+                'orders': orders,
+                'comment_form': comment_form,
+                'order_form': order_form
+            }
+            return render(request, 'accounts/show_profile.html', context)
 
-        context = {
-            'user': user,
-            'custom_user': custom_user,
-            'form': customer_form,
-            'orders': orders,
-            'comment_form': comment_form,
-            'order_form': order_form
-        }
-        return render(request, 'accounts/show_profile.html', context)
 
 
 #TODO EKSİK ÇALIŞIYOR
@@ -172,5 +185,4 @@ class UpdateProfileView(LoginRequiredMixin, View):
 
 def index(request):
     return render(request, 'djangoP/index.html')
-
 

@@ -12,6 +12,7 @@ urlpatterns = [
     path('delete_food/<int:pk>/', views.DeleteFoodView.as_view(), name='delete_food'),
     path('restaurant_show_orders', views.RestaurantShowOrdersView.as_view(), name='restaurant_show_orders'),
     path('change_order_status/<int:pk>/', views.ChangeOrderStatusView.as_view(), name='change_order_status'),
+    path('restaurant_likes_comments', views.RestaurantLikeComments.as_view(), name='restaurant_likes_comments'),
 
 ]
 

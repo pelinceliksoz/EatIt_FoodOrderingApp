@@ -7,7 +7,8 @@ from customer_operations.models import Customer
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from accounts.views import get_user_type
+from django.http import JsonResponse
 
 class CustomerMainPageView(LoginRequiredMixin, View):
     def get(self, request):
@@ -44,18 +45,31 @@ class LikeView(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse('food_details', args=[str(pk)]))
 
 
+
 class LikedFoodsView(LoginRequiredMixin, View):
     def get(self, request):
-        customer = request.user.customuser.customer
-        liked_foods = Food.objects.filter(likes=customer)
-        customer_comments = Comment.objects.filter(customer=customer)
-        context = {
-            'customer_comments': customer_comments,
-            'customer_name': customer,
-            'liked_foods': liked_foods
-        }
-        print(context)
-        return render(request, 'customer_operations/liked_foods.html', context)
+        #restaurant
+        if(get_user_type(request.user.id) == 1):
+            restaurant = request.user.customuser.restaurant
+            restaurant_foods = Food.objects.filter(restaurant=restaurant)
+            comments = Comment.objects.filter(food__restaurant=restaurant)
+            context = {
+                'restaurant': restaurant,
+                'restaurant_foods': restaurant_foods,
+                'comments': comments
+            }
+            return render(request, 'restaurant_operations/restaurant_likes_comments.html', context)
+        else:
+            customer = request.user.customuser.customer
+            liked_foods = Food.objects.filter(likes=customer)
+            customer_comments = Comment.objects.filter(customer=customer)
+            context = {
+                'customer_comments': customer_comments,
+                'customer_name': customer,
+                'liked_foods': liked_foods
+            }
+            print(context)
+            return render(request, 'customer_operations/liked_foods.html', context)
 
 
 class RemoveLikeView(LoginRequiredMixin, View):

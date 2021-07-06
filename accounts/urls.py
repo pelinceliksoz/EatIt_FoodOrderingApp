@@ -17,6 +17,7 @@ urlpatterns = [
     path('restaurant_operations/', include(restaurant_operations.urls)),
     path('customer_operations/', include(customer_operations.urls)),
     path('accounts/show_profile', views.ShowProfileView.as_view(), name='show_profile'),
+    path('accounts/restaurant_show_profile', views.ShowProfileView.as_view(), name='show_profile'),
     path('accounts/update_profile', views.UpdateProfileView.as_view(), name='update_profile'),
     path('common/', include(common.urls))
 

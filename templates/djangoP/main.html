@@ -24,7 +24,7 @@
             <!-- Left elements -->
             <div class="d-flex">
                 <!-- Brand -->
-                <a href="{% url 'customer_main_page' %}"><img src="/static/images/eatit_text_3.png" alt="course image" height="40px" ></a>
+                <a href="{% url 'main_page' %}"><img src="/static/images/eatit_text_3.png" alt="course image" height="40px" ></a>
 {#                <a class="navbar-brand me-2 mb-1 d-flex align-items-center" href="{% url 'userPage' %}" style="font-family: 'Times New Roman'"> Peaky Learn#}
 {#                </a>#}
 
@@ -53,12 +53,12 @@
 
             <!-- Right elements -->
             <ul class="navbar-nav flex-row">
-                <li class="nav-item me-3 me-lg-1" >
-                    <a class="nav-link d-sm-flex align-items-sm-center" href="{% url 'index'%}">
-                        <img class="round" width="28" height="28" avatar={{ username }}>
-                        <strong class="d-none d-sm-block ms-1">&ensp; {{ username }}</strong>
-                    </a>
-                </li>
+{#                <li class="nav-item me-3 me-lg-1" >#}
+{#                    <a class="nav-link d-sm-flex align-items-sm-center" href="{% url 'index'%}">#}
+{#                        <img class="round" width="28" height="28" avatar={{ username }}>#}
+{#                        <strong class="d-none d-sm-block ms-1">&ensp; {{ username }}</strong>#}
+{#                    </a>#}
+{#                </li>#}
                 <!-- Badge -->
                 <li style="padding-left:20px;" class="nav-item">
                     <a class="nav-link" href="{% url 'liked_foods' %}">
@@ -67,6 +67,7 @@
                     </a>
                 </li>
                 <li style="padding-left:20px;" class="nav-item">
+                    <td><a href="{% url 'show_orders' %}" class = "btn btn-success">Show Orders</a></td>
                     <td><a href="{% url 'show_profile' %}" class = "btn btn-info">My Profile</a></td>
                     <td><a href="{% url 'logout' %}" class = "btn btn-danger">Logout</a></td>
                 </li>

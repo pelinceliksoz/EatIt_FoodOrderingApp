@@ -1,0 +1,67 @@
+{%  extends 'djangoP/main.html' %}
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Welcome {{ username }}
+        </title>
+
+    </head>
+    <body>
+    <br>
+
+    <div class="modal-body row">
+
+        <div class="col-md-5">
+            <!-- Your first column here -->
+            <div style="align-items: center" class="card card-body">
+
+                <img class="round" width="300" height="300" avatar= "{{ user.first_name }} {{ user.last_name }}">
+                <hr>
+                <h3 style="text-align: center">Name: {{ user.first_name }} {{ user.last_name }}</h3>
+                <h3 style="text-align: center">Email: {{ user.email }}</h3>
+                <h3 style="text-align: center">Location: {{ custom_user.location }}</h3>
+
+                <hr>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <!-- Your second column here -->
+            <h3> All Recent Orders </h3>
+            <hr>
+            <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Order Date</th>
+                    <th>Customer Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    {% if order.status == 'Delivered' %}
+                        <td>{{ order.food }}</td>
+                        <td>{{ order.date }}</td>
+                        <td>{{ order.customer }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#products').DataTable();
+        } );
+    </script>
+    </html>
+{% endblock %}

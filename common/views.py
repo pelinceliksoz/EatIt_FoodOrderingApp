@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 from .models import Comment, Food
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from restaurant_operations.models import Restaurant
+from accounts.views import get_user_type
 
 
 class SearchRestaurant(LoginRequiredMixin, View):
@@ -20,6 +19,28 @@ class SeeCommentsView(LoginRequiredMixin, View):
             'comments': comments
         }
         return render(request, 'common/see_comments.html', context)
+
+
+def main_page_view(request):
+    uid = request.user.id
+    #restaurant
+    if(get_user_type(uid) == 1):
+        return redirect('restaurant_main_page')
+    else:
+        return redirect('customer_main_page')
+
+
+def show_orders(request):
+    uid = request.user.id
+    #restaurant
+    if(get_user_type(uid) == 1):
+        return redirect('restaurant_show_orders')
+    else:
+        return redirect('customer_own_orders')
+
+
+
+
 
 
 
