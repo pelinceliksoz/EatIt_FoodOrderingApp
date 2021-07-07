@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.loader import render_to_string
 from django.views import View
 from common.models import Food, Comment, Order
 from customer_operations.forms import MakeCommentForm,MakeOrderForm
@@ -26,6 +27,9 @@ class FoodDetailsView(LoginRequiredMixin, View):
         food = Food.objects.get(pk=pk)
         stuff = get_object_or_404(Food, id=self.kwargs['pk'])
         total_likes = stuff.total_likes()
+        liked = False
+        if stuff.likes.filter(user_id=request.user.id).exists():
+            liked = True
         order_form = MakeOrderForm()
         comment_form = MakeCommentForm()
 
@@ -34,16 +38,45 @@ class FoodDetailsView(LoginRequiredMixin, View):
             'total_likes': total_likes,
             'order_form': order_form,
             'comment_form': comment_form,
+            'liked' : liked
         }
         return render(request, 'customer_operations/food_details.html', context)
 
 
-class LikeView(LoginRequiredMixin, View):
-    def post(self, request, pk):
-        food = get_object_or_404(Food, id=request.POST.get('food_pk'))
-        food.likes.add(request.user.customuser.customer)
-        return HttpResponseRedirect(reverse('food_details', args=[str(pk)]))
+# class LikeView(LoginRequiredMixin, View):
+#     def post(self, request, pk):
+#         food = get_object_or_404(Food, id=request.POST.get('food_pk'))
+#         liked = False
+#         print('*****************************************************')
+#         print(food.likes.filter(user_id=request.user.id))
+#         if food.likes.filter(user_id=request.user.id).exists():
+#             food.likes.remove(request.user.customuser.customer)
+#             liked = False
+#         else:
+#             food.likes.add(request.user.customuser.customer)
+#             liked = True
+#         return HttpResponseRedirect(reverse('food_details', args=[str(pk)]))
 
+
+class LikeView(LoginRequiredMixin, View):
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    def post(self, request, pk):
+        customer = request.user.customuser.customer
+        print(customer)
+        food_id = request.POST['food_id']
+        print("-------------------------------------------------------------------------")
+        print(food_id)
+        food = get_object_or_404(Food, id=food_id)
+        if food.likes.filter(user_id=request.user.id).exists():
+            food.likes.remove(request.user.customuser.customer)
+            liked = False
+        else:
+            food.likes.add(request.user.customuser.customer)
+            liked = True
+        print(liked)
+        print(food.likes.all())
+        html = render_to_string(template_name='djangoP/like.html', context={'liked': liked})
+        return JsonResponse({'html':html})
 
 
 class LikedFoodsView(LoginRequiredMixin, View):

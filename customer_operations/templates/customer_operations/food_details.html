@@ -9,20 +9,18 @@
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <div class="well well-sm Leanor" style="display: flex; justify-content: center; background: #e9e9f5!important;">
-                <form action="{% url 'like_food' pk=food.pk %}" method="POST">
-                    {% csrf_token %}
-
-
-                    <button type="submit" name="food_pk" value="{{ food.pk }}" class="btn btn-lg btn btn-warning"  style="width: 300px; margin-right: 120px">
-                         <span><i class="fas fa-heart"></i></span> Like </button>
-                </form>
+{#                <form action="{% url 'like_food' pk=food.pk %}" method="POST">#}
+{#                    {% csrf_token %}#}
+                <div class="like-div">
+                    {% include 'djangoP/like.html' %}
+                    </div>
+{#                </form>#}
 
 
                 <div >
-{#                    <img src="../../../static/images/eatit.jpeg" alt="course image" width="250" height="250" >#}
                     <img class="menu-image" src= "{{ BASE_DIR }}/static/images/{{ food.food_pic }}" alt="{{ food.food_name }}" >
-                    <h2 style="text-align: center"> Total Likes: {{ total_likes }} <div style="display: inline"></div> </h2>
-                    {{ liked }}
+                   <h2 style="text-align: center"> Total Likes: {{ total_likes }} <div style="display: inline"></div> </h2>
+
                 </div>
 
                  <button type="button" class="btn btn-lg btn btn-success" style="width: 300px; margin-left: 120px " data-bs-toggle="modal" data-bs-target="#modal_order_food_{{ food.id }}">
@@ -118,6 +116,37 @@
                 <p style="text-align: center"><strong>{{ food.description }}</strong></p>
             </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(function() {
+                $('.thumb').click(function () {
+                    alert('GİRDİ')
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url 'like_food' pk=food.pk %}',
+                    data: {
+                        'food_id': {{ food.id }},
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                    success: LikePost,
+                    dataType: 'html'
+                });
+
+                function LikePost(data, jqXHR) {
+                    var data = $.parseJSON(data)
+                    if (data['liked']) {
+                        $('.thumb').removeClass("btn btn-lg btn btn-info thumb").addClass('btn btn-lg btn btn-danger thumb')
+                    }
+                    else
+                        {
+                            $('.thumb').removeClass("btn btn-lg btn btn-danger thumb").addClass('btn btn-lg btn btn-info thumb')
+                        }
+                    $('.like-div').html(data['html'])
+
+                }
+            });
+        })
+        </script>
         </body>
     </html>
 

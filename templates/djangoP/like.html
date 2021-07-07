@@ -1,0 +1,9 @@
+{% if liked %}
+<button type="submit" name="food_pk" value="{{ food.pk }}" class="btn btn-lg btn btn-danger thumb"  style="width: 300px; margin-right: 120px">
+                            <span><i class="fas fa-heart fa-rotate-180 thumb"></i></span> Unlike </button>
+Unlike </button>
+{% else %}
+<button type="submit" name="food_pk" value="{{ food.pk }}" class="btn btn-lg btn btn-info thumb"  style="width: 300px; margin-right: 120px">
+                             <span><i class="fas fa-heart thumb"></i></span> Like </button>
+Like </button>
+{% endif %}
