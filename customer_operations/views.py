@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.views import View
 from common.models import Food, Comment, Order
-from customer_operations.forms import MakeCommentForm,MakeOrderForm
+from customer_operations.forms import MakeCommentForm, MakeOrderForm
 from restaurant_operations.models import Restaurant
 from customer_operations.models import Customer
 from django.urls import reverse
@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.views import get_user_type
 from django.http import JsonResponse
+
 
 class CustomerMainPageView(LoginRequiredMixin, View):
     def get(self, request):
@@ -32,13 +33,12 @@ class FoodDetailsView(LoginRequiredMixin, View):
             liked = True
         order_form = MakeOrderForm()
         comment_form = MakeCommentForm()
-
         context = {
             'food': food,
             'total_likes': total_likes,
             'order_form': order_form,
             'comment_form': comment_form,
-            'liked' : liked
+            'liked': liked,
         }
         return render(request, 'customer_operations/food_details.html', context)
 
@@ -60,6 +60,7 @@ class FoodDetailsView(LoginRequiredMixin, View):
 
 class LikeView(LoginRequiredMixin, View):
     print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
     def post(self, request, pk):
         customer = request.user.customuser.customer
         print(customer)
@@ -76,13 +77,13 @@ class LikeView(LoginRequiredMixin, View):
         print(liked)
         print(food.likes.all())
         html = render_to_string(template_name='djangoP/like.html', context={'liked': liked})
-        return JsonResponse({'html':html})
+        return JsonResponse({'liked': liked})
 
 
 class LikedFoodsView(LoginRequiredMixin, View):
     def get(self, request):
-        #restaurant
-        if(get_user_type(request.user.id) == 1):
+        # restaurant
+        if (get_user_type(request.user.id) == 1):
             restaurant = request.user.customuser.restaurant
             restaurant_foods = Food.objects.filter(restaurant=restaurant)
             comments = Comment.objects.filter(food__restaurant=restaurant)
@@ -233,7 +234,3 @@ class RemoveOrderCustomerView(LoginRequiredMixin, View):
         order = Order.objects.get(pk=pk)
         order.delete()
         return redirect('customer_own_orders')
-
-
-
-

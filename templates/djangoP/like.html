@@ -1,9 +1,11 @@
 {% if liked %}
-<button type="submit" name="food_pk" value="{{ food.pk }}" class="btn btn-lg btn btn-danger thumb"  style="width: 300px; margin-right: 120px">
-                            <span><i class="fas fa-heart fa-rotate-180 thumb"></i></span> Unlike </button>
-Unlike </button>
+<button type="submit" name="food_pk" value="{{ food.pk }}" class="btn btn-lg btn btn-info bi bi-emoji-angry thumb"  style=" margin-right: 120px" > Unlike
+{#                            <span><i class="bi bi-emoji-angry "></i></span> Unlike#}
+</button>
+
 {% else %}
-<button type="submit" name="food_pk" value="{{ food.pk }}" class="btn btn-lg btn btn-info thumb"  style="width: 300px; margin-right: 120px">
-                             <span><i class="fas fa-heart thumb"></i></span> Like </button>
-Like </button>
+<button type="submit" name="food_pk" value="{{ food.pk }}" class="btn btn-lg btn btn-danger bi bi-emoji-heart-eyes thumb"  style=" margin-right: 120px" > Like
+{#                             <span><i class="bi bi-emoji-heart-eyes"></i></span> Like#}
+</button>
+
 {% endif %}
