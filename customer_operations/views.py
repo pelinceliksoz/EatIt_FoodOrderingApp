@@ -59,14 +59,9 @@ class FoodDetailsView(LoginRequiredMixin, View):
 
 
 class LikeView(LoginRequiredMixin, View):
-    print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-
     def post(self, request, pk):
         customer = request.user.customuser.customer
-        print(customer)
         food_id = request.POST['food_id']
-        print("-------------------------------------------------------------------------")
-        print(food_id)
         food = get_object_or_404(Food, id=food_id)
         if food.likes.filter(user_id=request.user.id).exists():
             food.likes.remove(request.user.customuser.customer)
@@ -74,8 +69,6 @@ class LikeView(LoginRequiredMixin, View):
         else:
             food.likes.add(request.user.customuser.customer)
             liked = True
-        print(liked)
-        print(food.likes.all())
         html = render_to_string(template_name='djangoP/like.html', context={'liked': liked})
         return JsonResponse({'liked': liked})
 

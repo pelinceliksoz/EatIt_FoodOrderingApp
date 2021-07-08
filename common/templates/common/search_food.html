@@ -16,18 +16,13 @@
     {% if searched %}
         <h1> You searched for {{ searched }}...</h1>
         <br/>
-        {% for restaurant in restaurants %}
-            <a href="{% url 'restaurant_menu' pk=restaurant.user_id %}"><h1>{{ restaurant.restaurant_name }}</h1></a><br/>
+        {% for food in foods %}
+            <a href="{% url 'restaurant_food_details' pk=food.pk %}"><h1>{{ food.food_name }}</h1></a><br/>
         {% endfor %}
 
     {% else %}
         <h1> You forgot to search...</h1>
     {% endif %}
-
-
-
-
-
 
 </div>
 </body>

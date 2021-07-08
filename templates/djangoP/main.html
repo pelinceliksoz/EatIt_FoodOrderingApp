@@ -34,7 +34,7 @@
             <!-- Center elements -->
             <ul class="navbar-nav flex-row d-none d-md-flex">
                 <!-- Search form -->
-                <form class="input-group w-auto my-auto d-none d-sm-flex" method=POST action="{% url 'index' %}">
+                <form class="input-group w-auto my-auto d-none d-sm-flex" method=POST action="{% url 'search_restaurant' %}">
                     {% csrf_token %}
                     <input
                             style="width: 600px!important;"

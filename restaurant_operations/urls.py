@@ -13,7 +13,8 @@ urlpatterns = [
     path('restaurant_show_orders', views.RestaurantShowOrdersView.as_view(), name='restaurant_show_orders'),
     path('change_order_status/<int:pk>/', views.ChangeOrderStatusView.as_view(), name='change_order_status'),
     path('restaurant_likes_comments', views.RestaurantLikeComments.as_view(), name='restaurant_likes_comments'),
-
+    path('restaurant_food_details/<int:pk>/', views.RestaurantFoodDetails.as_view(), name='restaurant_food_details'),
+    path('restaurant_customer_profile/<int:pk>/', views.RestaurantCustomerProfile.as_view(), name='restaurant_customer_profile'),
 ]
 
 

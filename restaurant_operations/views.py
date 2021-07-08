@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AddFoodForm, ChangeOrderStatusForm
 from .models import Restaurant
-from common.models import Food,Order
+from common.models import Food, Order, Customer
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -137,4 +137,22 @@ class RestaurantLikeComments(View):
     def get(self, request):
         context = {}
         return render(request, 'restaurant_operations/restaurant_likes_comments.html', context)
+
+
+class RestaurantFoodDetails(View):
+    def get(self, request, pk):
+        food = Food.objects.get(pk=pk)
+        context = {
+            'food': food
+        }
+        return render(request, 'restaurant_operations/restaurant_food_details.html', context)
+
+
+class RestaurantCustomerProfile(View):
+    def get(self, request, pk):
+        customer = Customer.objects.get(pk=pk)
+        context = {
+            'customer': customer
+        }
+        return render(request, 'restaurant_operations/restaurant_customer_profile.html', context)
 

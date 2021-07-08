@@ -1,0 +1,126 @@
+{%  extends 'djangoP/main.html' %}
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <link rel="stylesheet" href='{% static "style/rateStar.css"%}'>
+    <html lang="en">
+        <head>
+             <!-- Required meta tags -->
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <div class="well well-sm Leanor" style="display: flex; justify-content: center; background: #e9e9f5!important;">
+                <button type="button" class="btn btn-lg btn btn-success" style="width: 300px; margin-right: 120px " data-bs-toggle="modal" data-bs-target="#modal_update_food_{{ food.id }}">
+                        <span><i class="bi bi-wrench"></i></span> Update </a>
+                </button>
+                <div class="modal fade" id="modal_update_food_{{ food.id }}" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Update Food</h5>
+                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="POST" action="{% url 'update_food' pk=food.pk %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+
+                                    <label for="id_food_name">Food name:</label><input type="text" name="food_name" maxlength="80" required="" id="id_food_name" class=" form-control" value="{{ food.food_name }}">
+                                    <label for="id_category">Category:</label><input type="text" name="category" maxlength="80" required="" id="id_category" class=" form-control" value="{{ food.category }}">
+                                    <label for="id_price">Price:</label><input type="number" name="price" step="any" required="" id="id_price" class=" form-control" value="{{ food.price }}">
+                                    <label for="id_description">Description:</label><input type="text" name="description" maxlength="8000" required="" id="id_description" class=" form-control" value="{{ food.description }}">
+
+
+                                    <div class="d-flex justify-content-center mt-3 login_container">
+                                        <input class="btn btn-primary" type="submit" value="Update">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div >
+                    <img class="menu-image" src= "{{ BASE_DIR }}/static/images/{{ food.food_pic }}" alt="{{ food.food_name }}" >
+                </div>
+                <button type="button" class="btn btn-lg btn btn-danger" style="width: 300px; margin-left: 120px " data-bs-toggle="modal" data-bs-target="#modal_delete_food_{{ food.id }}">
+                        <span><i class="bi bi-trash"></i></span> Delete </a>
+                 </button>
+                <!-- Modal -->
+                    <div class="modal fade" id="modal_delete_food_{{ food.id }}" tabindex="-1" aria-labelledby="deleteFoodModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+{#                          <div class="modal-header">#}
+                            <div class="modal-header d-flex justify-content-center">
+                            <h5 class="modal-title" id="deleteFoodModalLabel">Delete Food</h5>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                  <span>&times;</span>
+                              </button>
+
+                          </div>
+                          <div class="modal-body">
+                                Are you sure to delete the {{ food.food_name }}?
+                              <br>
+                              <i class="fas fa-times fa-4x animated rotateIn"></i>
+                          </div>
+{#                          <div class="modal-footer">#}
+                            <div class="modal-footer flex-center">
+                            <form action="{% url 'delete_food' pk=food.pk %}" method="POST">
+                                {% csrf_token %}
+                                <input class="btn btn-primary" type="submit" value="Delete">
+                                <button type="button" class="btn  btn-danger waves-effect" data-bs-dismiss="modal">Close</button>
+                            </form>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+            </div>
+        </head>
+
+        <body>
+            <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <div class="card card-body">
+
+                </div>
+                <div class="card card-body">
+                    <h2 style="text-align: center"> {{ food.food_name }} <div style="display: inline"></div> </h2>
+                    <h2 style="text-align: center">Food Details</h2>
+                </div>
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th></th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                          <tr>
+                                <td>{{ food.food_name }}</td>
+                                <td>{{ food.category }}</td>
+                                <td>{{ food.price }}</td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'see_comments' pk=food.pk %}">See Comments</a></td>
+
+                          </tr>
+                  </tbody>
+            </table>
+            <div class="card card-body">
+                <h2 style="text-align: center">Food Description</h2>
+            </div>
+            <div class="card card-body">
+                <p style="text-align: center"><strong>{{ food.description }}</strong></p>
+            </div>"
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+        </body>
+    </html>
+
+{% endblock %}
