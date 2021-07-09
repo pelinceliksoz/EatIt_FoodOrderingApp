@@ -21,104 +21,93 @@
 
                 <img class="round" width="300" height="300" avatar= "{{ user.first_name }} {{ user.last_name }}">
                 <hr>
-                <h3 style="text-align: center">Name: {{ user.first_name }} {{ user.last_name }}</h3>
-                <h3 style="text-align: center">Email: {{ user.email }}</h3>
-                <h3 style="text-align: center">Location: {{ custom_user.location }}</h3>
+                <h3 style="text-align: center; color:blue">Name: </h3>
+                <h3 style="text-align: center">{{ user.first_name }} {{ user.last_name }}</h3>
+                <h3 style="text-align: center; color:blue">Email: </h3>
+                <h3 style="text-align: center">{{ user.email }}</h3>
+                <h3 style="text-align: center; color:blue">Phone Number: </h3>
+                <h3 style="text-align: center; ">{{custom_user.phone}} </h3>
+                <h3 style="text-align: center; color:blue">Location: </h3>
+                <h3 style="text-align: center">{{ custom_user.location }}</h3>
+                <h3 style="text-align: center; color:blue">Address: </h3>
+                <h3 style="text-align: center">{{ customer.address }}</h3>
                 <hr>
             </div>
         </div>
         <div class="col-md-6">
             <!-- Your second column here -->
-            <h3> All Recent Orders </h3>
+            <h3> Liked Foods of the Customer on the {{ restaurant.restaurant_name }} </h3>
             <hr>
             <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th>Restaurant Name</th>
+                    <th>Food Name</th>
+                    <th>Category</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for food in liked_foods %}
+                    <tr>
+                        <td>{{ food }}</td>
+                        <td>{{ food.category }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            </br>
+            <h3> Commented Foods of the Customer on the {{ restaurant.restaurant_name }} </h3>
+            <hr>
+            <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Comment</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for comment in customer_comments %}
+                    <tr>
+                        <td>{{ comment.food }}</td>
+                        <td>{{ comment.content }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </br>
+         </table>
+            <!-- Your second column here -->
+            <h3> Ordered Foods of the Customer on the {{ restaurant.restaurant_name }} </h3>
+            <hr>
+            <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr>
                     <th>Food Name</th>
                     <th>Order Date</th>
-                    <th>Price</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th>Status</th>
 
 
                 </tr>
                 </thead>
                 <tbody>
                 {% for order in orders %}
-                    {% if order.status == 'Delivered' %}
                     <tr>
-                        <td>{{ order.food.restaurant.restaurant_name }}</td>
                         <td>{{ order.food }}</td>
                         <td>{{ order.date }}</td>
-                        <td>{{ order.food.price }}</td>
-{#                        <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Like</a></td>#}
-                        <td><button type="button" class="btn btn-lg btn btn-info" data-bs-toggle="modal" data-bs-target="#modal_make_comment_{{ order.food.id }}">
-                            Make Comment
-                        </button></td>
-                        <td><button type="button" class="btn btn-lg btn btn-success"  data-bs-toggle="modal" data-bs-target="#modal_order_food_{{ order.food.id }}">
-                                <span><i class="fas fa-dollar-sign"></i></span> Order Again</a>
-                        </button></td>
+                        <td>{{ order.status }}</td>
                     </tr>
-                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
-            {% for order in orders %}
-            <div class="modal fade" id="modal_make_comment_{{ order.food.id }}" tabindex="-1" aria-labelledby="makeCommentModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="makeCommentModalLabel">Comment on {{ order.food }}</h5>
-                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                    <span>&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="POST" action="{% url 'make_comment' pk=order.food.pk %}" enctype="multipart/form-data">
-                                                    {% csrf_token %}
-                                                    Give your comment on {{ food }} here:
-                                                    <br>
-                                                    {{ comment_form }}
-                                                    <div class="d-flex justify-content-center mt-3 login_container">
-                                                        <input class="btn btn-primary" type="submit" value="Save">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-             </div>
-                  <div class="modal fade" id="modal_order_food_{{ order.food.id }}" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="orderModalLabel">Order {{ order.food }}</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                    <span>&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="POST" action="{% url 'make_order' pk=order.food.pk %}" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    If you want to order {{ order.food }} please bring a message to confirm it. (Please also let us know if you want to change anything in your ordering food.)
-                                    <br>
-                                    {{ order_form }}
-                                    <div class="d-flex justify-content-center mt-3 login_container">
-                                        <input class="btn btn-primary" type="submit" value="Order">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
 
         </div>
-    {% endfor %}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

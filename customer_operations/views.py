@@ -227,3 +227,9 @@ class RemoveOrderCustomerView(LoginRequiredMixin, View):
         order = Order.objects.get(pk=pk)
         order.delete()
         return redirect('customer_own_orders')
+
+
+class OtherCustomersProfileView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        context = {}
+        return render(request, 'customer_operations/other_customers_profile.html', context)

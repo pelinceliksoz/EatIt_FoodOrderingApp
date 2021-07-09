@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AddFoodForm, ChangeOrderStatusForm
 from .models import Restaurant
-from common.models import Food, Order, Customer
+from common.models import Food, Order, Customer, Comment
+from accounts.models import CustomUser
+from django.contrib.auth.models import User
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.views import get_user_type
 
 
 class RestaurantMainPageView(LoginRequiredMixin, View):
@@ -150,9 +153,33 @@ class RestaurantFoodDetails(View):
 
 class RestaurantCustomerProfile(View):
     def get(self, request, pk):
-        customer = Customer.objects.get(pk=pk)
-        context = {
-            'customer': customer
-        }
-        return render(request, 'restaurant_operations/restaurant_customer_profile.html', context)
+        if(get_user_type(request.user.id) == 1):
+            restaurant = request.user.customuser.restaurant
+            user = User.objects.get(pk=pk)
+            custom_user = CustomUser.objects.get(pk=pk)
+            customer = Customer.objects.get(pk=pk)
+            liked_foods = Food.objects.filter(likes=customer, restaurant__user=restaurant)
+            customer_comments = Comment.objects.filter(customer=customer, food__restaurant__user=restaurant)
+            orders = Order.objects.filter(customer=customer, food__restaurant__user=restaurant)
+
+            context = {
+                'user': user,
+                'custom_user': custom_user,
+                'customer': customer,
+                'liked_foods': liked_foods,
+                'restaurant': restaurant,
+                'customer_comments': customer_comments,
+                'orders': orders
+            }
+            return render(request, 'restaurant_operations/restaurant_customer_profile.html', context)
+        else:
+            user = User.objects.get(pk=pk)
+            custom_user = CustomUser.objects.get(pk=pk)
+            customer = Customer.objects.get(pk=pk)
+            context = {
+                'user': user,
+                'custom_user': custom_user,
+                'customer': customer,
+            }
+            return render(request, 'customer_operations/other_customers_profile.html', context)
 

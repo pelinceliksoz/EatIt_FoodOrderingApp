@@ -45,7 +45,7 @@
                     {% if order.status == 'Delivered' %}
                         <td>{{ order.food }}</td>
                         <td>{{ order.date }}</td>
-                        <td>{{ order.customer }}</td>
+                    <td><a href="{% url 'restaurant_customer_profile' pk=order.customer.pk %}">{{ order.customer }}</a></td>
                     </tr>
                     {% endif %}
                 {% endfor %}

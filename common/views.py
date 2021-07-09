@@ -11,7 +11,7 @@ class SearchRestaurant(LoginRequiredMixin, View):
         #restaurant
         if(get_user_type(request.user.id) == 1):
             searched = request.POST['searched']
-            foods = Food.objects.filter(food_name__contains=searched)
+            foods = Food.objects.filter(food_name__icontains=searched)
             context = {
                 'searched': searched,
                 'foods': foods,
@@ -20,7 +20,7 @@ class SearchRestaurant(LoginRequiredMixin, View):
             return render(request, 'common/search_food.html', context)
         else:
             searched = request.POST['searched']
-            restaurants = Restaurant.objects.filter(restaurant_name__contains=searched)
+            restaurants = Restaurant.objects.filter(restaurant_name__icontains=searched)
             context = {
                 'user': user,
                 'searched': searched,
