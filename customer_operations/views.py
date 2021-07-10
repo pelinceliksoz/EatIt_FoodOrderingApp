@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.views import View
@@ -10,7 +11,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.views import get_user_type
 from django.http import JsonResponse
-
+from django.db.models import Avg
 
 class CustomerMainPageView(LoginRequiredMixin, View):
     def get(self, request):
@@ -43,26 +44,15 @@ class FoodDetailsView(LoginRequiredMixin, View):
         return render(request, 'customer_operations/food_details.html', context)
 
 
-# class LikeView(LoginRequiredMixin, View):
-#     def post(self, request, pk):
-#         food = get_object_or_404(Food, id=request.POST.get('food_pk'))
-#         liked = False
-#         print('*****************************************************')
-#         print(food.likes.filter(user_id=request.user.id))
-#         if food.likes.filter(user_id=request.user.id).exists():
-#             food.likes.remove(request.user.customuser.customer)
-#             liked = False
-#         else:
-#             food.likes.add(request.user.customuser.customer)
-#             liked = True
-#         return HttpResponseRedirect(reverse('food_details', args=[str(pk)]))
-
-
 class LikeView(LoginRequiredMixin, View):
     def post(self, request, pk):
         customer = request.user.customuser.customer
         food_id = request.POST['food_id']
         food = get_object_or_404(Food, id=food_id)
+        # like_count = food.likes.count()
+        # food.rate = like_count
+        # food.rate.save()
+
         if food.likes.filter(user_id=request.user.id).exists():
             food.likes.remove(request.user.customuser.customer)
             liked = False
@@ -233,3 +223,67 @@ class OtherCustomersProfileView(LoginRequiredMixin, View):
     def get(self, request, pk):
         context = {}
         return render(request, 'customer_operations/other_customers_profile.html', context)
+
+
+class CheapestFoodsView(LoginRequiredMixin, View):
+    def get(self, request):
+        foods = Food.objects.all()
+        cheapest_foods = foods.order_by('price')[:5]
+        print(cheapest_foods)
+        context = {
+            'cheapest_foods': cheapest_foods
+        }
+        return render(request, 'customer_operations/cheapest_foods.html', context)
+
+
+class PopularRestaurantsView(LoginRequiredMixin, View):
+    def get(self, request):
+
+        # orders = Order.objects.all().values('food__restaurant').annotate(total=Count('food_restaurant').order_by('total'))
+        # print(orders)
+        # orders = Order.objects.all()
+        # restaurants = Restaurant.objects.all()
+        # for order in orders:
+        #     for restaurant in restaurants:
+        #         if order.food.restaurant == restaurant:
+        #
+        context = {
+
+        }
+        return render(request, 'customer_operations/popular_restaurants.html', context)
+
+
+class PopularFoodsView(LoginRequiredMixin, View):
+    def get(self, request):
+        context = {
+        }
+        return render(request, 'customer_operations/popular_foods.html', context)
+
+
+class CheapestRestaurantsView(LoginRequiredMixin, View):
+    def get(self, request):
+        restaurants = Restaurant.objects.all()
+        for restaurant in restaurants:
+            calculate_avg_prices(restaurant)
+        ordered_avg_prices_restaurants = restaurants.order_by('avg_int_food_price')[:5]
+        context = {
+            'restaurants': ordered_avg_prices_restaurants
+        }
+        return render(request, 'customer_operations/cheapest_restaurants.html', context)
+
+
+def calculate_avg_prices(restaurant):
+    foods = Food.objects.filter(restaurant=restaurant)
+    avg_price = foods.aggregate(Avg('price'))
+    avg_int_price = int(avg_price['price__avg'])
+    restaurant.avg_int_food_price = avg_int_price
+    restaurant.save()
+
+
+
+
+
+
+
+
+

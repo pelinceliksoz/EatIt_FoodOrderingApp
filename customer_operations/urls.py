@@ -14,5 +14,9 @@ urlpatterns = [
     path('customer_own_orders', views.ShowCustomerOwnOrdersView.as_view(), name='customer_own_orders'),
     path('remove_order_customer/<int:pk>/', views.RemoveOrderCustomerView.as_view(), name='remove_order_customer'),
     path('other_customers_profile/<int:pk>/', views.OtherCustomersProfileView.as_view(), name='other_customers_profile'),
+    path('cheapest_foods', views.CheapestFoodsView.as_view(), name='cheapest_foods'),
+    path('popular_restaurants', views.PopularRestaurantsView.as_view(), name='popular_restaurants'),
+    path('popular_foods', views.PopularFoodsView.as_view(), name='popular_foods'),
+    path('cheapest_restaurants', views.CheapestRestaurantsView.as_view(), name='cheapest_restaurants'),
 
 ]
