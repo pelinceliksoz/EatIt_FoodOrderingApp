@@ -41,6 +41,8 @@ class AddFoodView(LoginRequiredMixin, View):
             food = form.save()
             restaurant = Restaurant.objects.get(user_id=restaurant_id)
             food.restaurant = restaurant
+            food.like_count = 0
+            food.order_count = 0
             food.save()
 
             context = {

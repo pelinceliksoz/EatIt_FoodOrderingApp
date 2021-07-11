@@ -14,6 +14,8 @@ class Food(models.Model):
     orders = models.ManyToManyField(Customer, related_name='order_foods')
     food_pic = models.ImageField()
     rate = models.IntegerField(null=True)
+    like_count = models.IntegerField(null=True)
+    order_count = models.IntegerField(null=True)
 
     def total_likes(self):
         return self.likes.count()

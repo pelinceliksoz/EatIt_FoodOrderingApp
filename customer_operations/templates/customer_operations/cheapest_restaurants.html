@@ -27,6 +27,7 @@
             <th>Category</th>
             <th>Average Food Price</th>
             <th></th>
+            <th></th>
 
 
         </tr>
@@ -38,6 +39,7 @@
                     <td>{{ restaurant.restaurant_name }}</td>
                     <td>{{ restaurant.category }}</td>
                     <td>{{ restaurant.avg_int_food_price }} TL</td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Show Cheapest Food in {{ restaurant.restaurant_name }}</a></td>
                     <td><a class="btn btn-sm btn-outline-primary" href="{% url 'restaurant_menu' pk=restaurant.user_id %}">Show Menu</a></td>
 
               </tr>

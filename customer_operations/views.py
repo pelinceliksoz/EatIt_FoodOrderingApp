@@ -11,7 +11,8 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.views import get_user_type
 from django.http import JsonResponse
-from django.db.models import Avg
+from django.db.models import Avg, Max, Min
+
 
 class CustomerMainPageView(LoginRequiredMixin, View):
     def get(self, request):
@@ -32,6 +33,7 @@ class FoodDetailsView(LoginRequiredMixin, View):
         liked = False
         if stuff.likes.filter(user_id=request.user.id).exists():
             liked = True
+
         order_form = MakeOrderForm()
         comment_form = MakeCommentForm()
         context = {
@@ -49,16 +51,22 @@ class LikeView(LoginRequiredMixin, View):
         customer = request.user.customuser.customer
         food_id = request.POST['food_id']
         food = get_object_or_404(Food, id=food_id)
-        # like_count = food.likes.count()
-        # food.rate = like_count
-        # food.rate.save()
-
+        like_num = food.like_count
+        print('before------------------------------------------------')
+        print(like_num)
         if food.likes.filter(user_id=request.user.id).exists():
             food.likes.remove(request.user.customuser.customer)
+            like_num = like_num - 1
             liked = False
         else:
             food.likes.add(request.user.customuser.customer)
             liked = True
+            like_num = like_num + 1
+        food.like_count = like_num
+        food.save()
+        print('after------------------------------------------------')
+        print(food.like_count)
+
         html = render_to_string(template_name='djangoP/like.html', context={'liked': liked})
         return JsonResponse({'liked': liked})
 
@@ -187,6 +195,14 @@ class MakeOrderView(LoginRequiredMixin, View):
             order.customer = customer
             order.food = food
             order.status = 'Pending'
+            order_count = food.order_count
+            order_count = order_count + 1
+            food.order_count = order_count
+            restaurant_order_count = food.restaurant.ordered_food_count
+            restaurant_order_count = restaurant_order_count + 1
+            food.restaurant.ordered_food_count = restaurant_order_count
+            food.restaurant.save()
+            food.save()
             order.save()
             return redirect('customer_own_orders')
         else:
@@ -216,6 +232,14 @@ class RemoveOrderCustomerView(LoginRequiredMixin, View):
     def post(self, request, pk):
         order = Order.objects.get(pk=pk)
         order.delete()
+        order_count = order.food.order_count
+        order_count = order_count - 1
+        order.food.order_count = order_count
+        restaurant_order_count = order.food.restaurant.ordered_food_count
+        restaurant_order_count = restaurant_order_count - 1
+        order.food.restaurant.ordered_food_count = restaurant_order_count
+        order.food.restaurant.save()
+        order.food.save()
         return redirect('customer_own_orders')
 
 
@@ -238,24 +262,20 @@ class CheapestFoodsView(LoginRequiredMixin, View):
 
 class PopularRestaurantsView(LoginRequiredMixin, View):
     def get(self, request):
-
-        # orders = Order.objects.all().values('food__restaurant').annotate(total=Count('food_restaurant').order_by('total'))
-        # print(orders)
-        # orders = Order.objects.all()
-        # restaurants = Restaurant.objects.all()
-        # for order in orders:
-        #     for restaurant in restaurants:
-        #         if order.food.restaurant == restaurant:
-        #
+        restaurants = Restaurant.objects.all()
+        most_ordered_restaurants = restaurants.order_by('-ordered_food_count')[:5]
         context = {
-
+            'most_ordered_restaurants': most_ordered_restaurants
         }
         return render(request, 'customer_operations/popular_restaurants.html', context)
 
 
 class PopularFoodsView(LoginRequiredMixin, View):
     def get(self, request):
+        foods = Food.objects.all()
+        most_ordered_foods = foods.order_by('-order_count')[:5]
         context = {
+            'most_ordered_foods': most_ordered_foods
         }
         return render(request, 'customer_operations/popular_foods.html', context)
 
@@ -279,6 +299,15 @@ def calculate_avg_prices(restaurant):
     restaurant.avg_int_food_price = avg_int_price
     restaurant.save()
 
+
+class MostLikedFoodsView(View):
+    def get(self,request):
+        foods = Food.objects.all()
+        most_liked_foods = foods.order_by('-like_count')[:5]
+        context = {
+            'most_liked_foods': most_liked_foods
+        }
+        return render(request, 'customer_operations/most_liked_foods.html', context)
 
 
 

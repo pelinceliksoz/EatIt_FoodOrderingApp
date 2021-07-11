@@ -18,5 +18,6 @@ urlpatterns = [
     path('popular_restaurants', views.PopularRestaurantsView.as_view(), name='popular_restaurants'),
     path('popular_foods', views.PopularFoodsView.as_view(), name='popular_foods'),
     path('cheapest_restaurants', views.CheapestRestaurantsView.as_view(), name='cheapest_restaurants'),
+    path('most_liked_foods', views.MostLikedFoodsView.as_view(), name='most_liked_foods'),
 
 ]

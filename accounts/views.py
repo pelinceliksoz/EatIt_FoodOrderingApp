@@ -83,6 +83,7 @@ class RestaurantRegisterView(View):
                 rate=0,
             )
             user.save()
+            restaurant.ordered_food_count = 0
             restaurant.save()
             return redirect('/accounts/login')
         else:
