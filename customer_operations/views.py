@@ -263,10 +263,18 @@ class CheapestFoodsView(LoginRequiredMixin, View):
 class PopularRestaurantsView(LoginRequiredMixin, View):
     def get(self, request):
         restaurants = Restaurant.objects.all()
-        most_ordered_restaurants = restaurants.order_by('-ordered_food_count')[:5]
+        most_ordered_restaurants = list(restaurants.order_by('-ordered_food_count')[:5])
+        most_ordered_foods = {}
+        for restaurant in most_ordered_restaurants:
+            foods = Food.objects.filter(restaurant=restaurant)
+            most_popular_food = foods.order_by('-order_count').first()
+            most_ordered_foods[restaurant] = most_popular_food
+        print(most_ordered_foods)
         context = {
-            'most_ordered_restaurants': most_ordered_restaurants
+            'most_ordered_restaurants': most_ordered_restaurants,
+            'most_ordered_foods': most_ordered_foods
         }
+        print(most_ordered_restaurants)
         return render(request, 'customer_operations/popular_restaurants.html', context)
 
 
@@ -283,11 +291,17 @@ class PopularFoodsView(LoginRequiredMixin, View):
 class CheapestRestaurantsView(LoginRequiredMixin, View):
     def get(self, request):
         restaurants = Restaurant.objects.all()
+        foods = {}
+        cheapest_foods = {}
         for restaurant in restaurants:
             calculate_avg_prices(restaurant)
+            foods[restaurant] = Food.objects.filter(restaurant=restaurant)
+            cheapest_foods[restaurant] = foods[restaurant].order_by('price').first()
+        print(cheapest_foods)
         ordered_avg_prices_restaurants = restaurants.order_by('avg_int_food_price')[:5]
         context = {
-            'restaurants': ordered_avg_prices_restaurants
+            'restaurants': ordered_avg_prices_restaurants,
+            'cheapest_foods': cheapest_foods
         }
         return render(request, 'customer_operations/cheapest_restaurants.html', context)
 

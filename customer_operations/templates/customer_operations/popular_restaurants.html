@@ -22,7 +22,6 @@
     <table id="products" class="table table-striped table-bordered" cellspacing="0" width="100%">
       <thead>
         <tr>
-            <th></th>
             <th>Restaurant Name</th>
             <th>Category</th>
             <th>Ordered Food Counts</th>
@@ -33,17 +32,18 @@
         </tr>
       </thead>
       <tbody>
-          {% for restaurant in most_ordered_restaurants %}
+          {% for restaurant,food in most_ordered_foods.items %}
               <tr>
-                    <td><img class="menu-image" src= "{{ BASE_DIR }}/static/images/{{ food.food_pic }}" alt="{{ food.food_name }}"   ></td>
+{#                    <td><a href="/food_details/{{food.pk}}"><img class="menu-image" src= "{{ BASE_DIR }}/static/images/{{ food.food_pic }}" alt="{{ food.food_name }}"   ></a></td>#}
                     <td>{{ restaurant.restaurant_name }}</td>
                     <td>{{ restaurant.category }}</td>
                     <td>{{ restaurant.ordered_food_count }}</td>
-                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'index' %}">Show Most Popular Food in {{ restaurant.restaurant_name }}</a></td>
+                    <td><a class="btn btn-sm btn-outline-primary" href="{% url 'food_details' pk=food.pk %}">Show Most Popular Food in {{ restaurant.restaurant_name }}</a></td>
                     <td><a class="btn btn-sm btn-outline-primary" href="{% url 'restaurant_menu' pk=restaurant.user_id %}">Show Menu</a></td>
-
               </tr>
           {% endfor %}
+
+
       </tbody>
     </table>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
