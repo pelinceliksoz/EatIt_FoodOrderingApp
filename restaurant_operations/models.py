@@ -8,10 +8,8 @@ class Restaurant(models.Model):
         on_delete=models.CASCADE,
         primary_key=True,
     )
-    rate = models.IntegerField(null=0)
     restaurant_name = models.CharField(max_length=80, null=True)
     category = models.CharField(max_length=80, null=True)
-    avg_food_price = models.FloatField(null=True)
     avg_int_food_price = models.IntegerField(null=True)
     ordered_food_count = models.IntegerField(null=True)
 

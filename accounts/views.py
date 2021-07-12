@@ -80,7 +80,6 @@ class RestaurantRegisterView(View):
                 user=custom_user,
                 restaurant_name=form.cleaned_data["restaurant_name"],
                 category=form.cleaned_data["category"],
-                rate=0,
             )
             user.save()
             restaurant.ordered_food_count = 0
