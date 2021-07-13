@@ -157,9 +157,11 @@ class RestaurantCustomerProfile(View):
     def get(self, request, pk):
         if(get_user_type(request.user.id) == 1):
             restaurant = request.user.customuser.restaurant
-            user = User.objects.get(pk=pk)
-            custom_user = CustomUser.objects.get(pk=pk)
             customer = Customer.objects.get(pk=pk)
+            custom_user = CustomUser.objects.get(pk=pk)
+            user = User.objects.get(pk=customer.pk + 2)
+            print(user.pk)
+            print(customer.pk)
             liked_foods = Food.objects.filter(likes=customer, restaurant__user=restaurant)
             customer_comments = Comment.objects.filter(customer=customer, food__restaurant__user=restaurant)
             orders = Order.objects.filter(customer=customer, food__restaurant__user=restaurant)

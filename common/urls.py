@@ -7,6 +7,4 @@ urlpatterns = [
     path('see_comments/<int:pk>/', views.SeeCommentsView.as_view(), name='see_comments'),
     path('main_page/', views.main_page_view, name='main_page'),
     path('show_orders/', views.show_orders, name='show_orders')
-
-
 ]

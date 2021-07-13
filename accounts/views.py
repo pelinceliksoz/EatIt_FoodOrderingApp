@@ -42,6 +42,7 @@ class LoginView(View):
                 print('invalid credentials')
                 return redirect('login')
 
+
 # Returns:
 # 1 if restaurant
 # 2 if customer
@@ -153,8 +154,6 @@ class ShowProfileView(LoginRequiredMixin, View):
             return render(request, 'accounts/show_profile.html', context)
 
 
-
-#TODO EKSİK ÇALIŞIYOR
 class UpdateProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user

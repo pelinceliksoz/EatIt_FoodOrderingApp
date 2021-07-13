@@ -52,8 +52,6 @@ class LikeView(LoginRequiredMixin, View):
         food_id = request.POST['food_id']
         food = get_object_or_404(Food, id=food_id)
         like_num = food.like_count
-        print('before------------------------------------------------')
-        print(like_num)
         if food.likes.filter(user_id=request.user.id).exists():
             food.likes.remove(request.user.customuser.customer)
             like_num = like_num - 1
@@ -64,8 +62,6 @@ class LikeView(LoginRequiredMixin, View):
             like_num = like_num + 1
         food.like_count = like_num
         food.save()
-        print('after------------------------------------------------')
-        print(food.like_count)
 
         html = render_to_string(template_name='djangoP/like.html', context={'liked': liked})
         return JsonResponse({'liked': liked})
@@ -73,8 +69,7 @@ class LikeView(LoginRequiredMixin, View):
 
 class LikedFoodsView(LoginRequiredMixin, View):
     def get(self, request):
-        # restaurant
-        if (get_user_type(request.user.id) == 1):
+        if get_user_type(request.user.id) == 1:
             restaurant = request.user.customuser.restaurant
             restaurant_foods = Food.objects.filter(restaurant=restaurant)
             comments = Comment.objects.filter(food__restaurant=restaurant)
@@ -296,9 +291,11 @@ class CheapestRestaurantsView(LoginRequiredMixin, View):
         for restaurant in restaurants:
             calculate_avg_prices(restaurant)
             foods[restaurant] = Food.objects.filter(restaurant=restaurant)
-            cheapest_foods[restaurant] = foods[restaurant].order_by('price').first()
+            # cheapest_foods[restaurant] = foods[restaurant].order_by('price').first()
         print(cheapest_foods)
         ordered_avg_prices_restaurants = restaurants.order_by('avg_int_food_price')[:5]
+        for restaurant in ordered_avg_prices_restaurants:
+            cheapest_foods[restaurant] = foods[restaurant].order_by('price').first()
         context = {
             'restaurants': ordered_avg_prices_restaurants,
             'cheapest_foods': cheapest_foods

@@ -8,8 +8,7 @@ from accounts.views import get_user_type
 class SearchRestaurant(LoginRequiredMixin, View):
     def post(self, request):
         user = request.user
-        #restaurant
-        if(get_user_type(request.user.id) == 1):
+        if get_user_type(request.user.id) == 1:
             searched = request.POST['searched']
             foods = Food.objects.filter(food_name__icontains=searched)
             context = {
@@ -54,8 +53,7 @@ class SeeCommentsView(LoginRequiredMixin, View):
 
 def main_page_view(request):
     uid = request.user.id
-    #restaurant
-    if(get_user_type(uid) == 1):
+    if get_user_type(uid) == 1:
         return redirect('restaurant_main_page')
     else:
         return redirect('customer_main_page')
@@ -63,8 +61,7 @@ def main_page_view(request):
 
 def show_orders(request):
     uid = request.user.id
-    #restaurant
-    if(get_user_type(uid) == 1):
+    if get_user_type(uid) == 1:
         return redirect('restaurant_show_orders')
     else:
         return redirect('customer_own_orders')

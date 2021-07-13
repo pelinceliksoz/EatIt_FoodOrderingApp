@@ -1,4 +1,4 @@
-{%  extends 'djangoP/main.html' %}
+ {%  extends 'djangoP/main.html' %}
 {% block content %}
 
 <!DOCTYPE html>
@@ -35,7 +35,7 @@
                     <td>{{ order.date }}</td>
                     <td>{{ order.food }}</td>
                     <td>{{ order.message }}</td>
-                    <td>{{ order.customer }}</td>
+                    <td><a href="{% url 'restaurant_customer_profile' pk=order.customer.pk %}">{{ order.customer }}</a></td>
                     <td>{{ order.customer.address }}</td>
                     <td>{{ order.status }}</td>
                     <!-- Button trigger modal -->
