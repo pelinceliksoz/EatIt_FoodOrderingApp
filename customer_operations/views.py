@@ -31,7 +31,9 @@ class FoodDetailsView(LoginRequiredMixin, View):
         stuff = get_object_or_404(Food, id=self.kwargs['pk'])
         total_likes = stuff.total_likes()
         liked = False
-        if stuff.likes.filter(user_id=request.user.id).exists():
+        print(stuff.id , request.user.id)
+        print (stuff.likes, type(stuff.likes))
+        if stuff.likes.filter(user__user_id=request.user.id).exists():
             liked = True
 
         order_form = MakeOrderForm()
@@ -52,7 +54,8 @@ class LikeView(LoginRequiredMixin, View):
         food_id = request.POST['food_id']
         food = get_object_or_404(Food, id=food_id)
         like_num = food.like_count
-        if food.likes.filter(user_id=request.user.id).exists():
+        print(food.likes.filter(user_id=request.user.customuser.customer.user_id).exists())
+        if food.likes.filter(user_id=request.user.customuser.customer.user_id).exists():
             food.likes.remove(request.user.customuser.customer)
             like_num = like_num - 1
             liked = False
