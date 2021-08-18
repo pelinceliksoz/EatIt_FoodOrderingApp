@@ -5,8 +5,19 @@ from datetime import datetime
 
 
 class Food(models.Model):
+    CATEGORY = (
+        ('Breakfast', 'Breakfast'),
+        ('Fast Food', 'Fast Food'),
+        ('Pastry', 'Pastry'),
+        ('Meat', 'Meat'),
+        ('Chicken', 'Chicken'),
+        ('Fish', 'Fish'),
+        ('Healthy', 'Healthy'),
+        ('Sweet', 'Sweet'),
+        ('Drink', 'Drink'),
+    )
     food_name = models.CharField(max_length=80)
-    category = models.CharField(max_length=80)
+    category = models.CharField(max_length=200, null=True, choices=CATEGORY)
     price = models.FloatField(null=0)
     description = models.TextField(max_length=8000, null=True)
     restaurant = models.ForeignKey(Restaurant, null=True, on_delete=models.SET_NULL)

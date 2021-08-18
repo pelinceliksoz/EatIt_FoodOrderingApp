@@ -1,8 +1,50 @@
+import numpy
 from django.shortcuts import render,redirect
 from django.views import View
-from .models import Comment, Food, Restaurant
+from .models import Comment, Food, Restaurant, Customer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from accounts.views import get_user_type
+
+import pandas as pd
+import numpy as np
+import matplotlib
+from matplotlib import pyplot as plt
+import sklearn
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.cluster import KMeans
+import pickle
+import sys
+import ast
+
+print("************************************************************************")
+customers = Customer.objects.filter().values_list('pk', flat=True)
+customers_array = numpy.array(customers)
+print(customers_array)
+categories = Food.CATEGORY
+i = 0
+categories_array = []
+while i < 9:
+    categories_array.append(categories[i][1])
+    i = i+1
+numpy.array(categories_array)
+print(categories_array)
+category_count_customers = []
+for customer in customers_array:
+    category_count_array = []
+    for category in categories_array:
+        foods = Food.objects.filter(likes__user=customer, category=category)
+        foods_array = numpy.array(foods)
+        category_count_array.append(foods_array.size)
+    numpy.array(category_count_array)
+    foods_array = numpy.array(foods)
+    category_count_customers.append(category_count_array)
+    numpy.array(category_count_customers)
+print(category_count_customers)
+print("************************************************************************")
+
+kmeans = KMeans(n_clusters=2, random_state=0).fit(category_count_customers, customers_array)
+print(kmeans.labels_)
+print("----------------------------------------------------------------------")
 
 
 class SearchRestaurant(LoginRequiredMixin, View):
