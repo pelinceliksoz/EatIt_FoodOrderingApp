@@ -1,3 +1,5 @@
+import numpy
+import random
 from django.contrib.contenttypes.fields import GenericRelation
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
@@ -13,12 +15,60 @@ from accounts.views import get_user_type
 from django.http import JsonResponse
 from django.db.models import Avg, Max, Min
 
+import pandas as pd
+import numpy as np
+import matplotlib
+from matplotlib import pyplot as plt
+import sklearn
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.cluster import KMeans
+import pickle
+import sys
+import ast
+
+print("************************************************************************")
+customers = Customer.objects.filter().values_list('pk', flat=True)
+customers_array = numpy.array(customers)
+print(customers_array)
+categories = Food.CATEGORY
+i = 0
+categories_array = []
+while i < 9:
+    categories_array.append(categories[i][1])
+    i = i+1
+numpy.array(categories_array)
+print(categories_array)
+category_count_customers = []
+for customer in customers_array:
+    category_count_array = []
+    for category in categories_array:
+        foods = Food.objects.filter(likes__user=customer, category=category)
+        foods_array = numpy.array(foods)
+        category_count_array.append(foods_array.size)
+    numpy.array(category_count_array)
+    foods_array = numpy.array(foods)
+    category_count_customers.append(category_count_array)
+    numpy.array(category_count_customers)
+print(category_count_customers)
+print("************************************************************************")
+
+kmeans = KMeans(n_clusters=3, random_state=0).fit(category_count_customers)
+print(kmeans.predict([category_count_customers[1]]))
+print(kmeans.labels_)
+
+print("----------------------------------------------------------------------")
+
+
+
+
 
 class CustomerMainPageView(LoginRequiredMixin, View):
     def get(self, request):
         user_name = request.user.first_name
         all_restaurants = Restaurant.objects.all().order_by('restaurant_name')
+        customer = request.user.customuser.customer
         context = {
+            'customer': customer,
             'user_name': user_name,
             'all_restaurants': all_restaurants,
         }
@@ -322,6 +372,36 @@ class MostLikedFoodsView(View):
             'most_liked_foods': most_liked_foods
         }
         return render(request, 'customer_operations/most_liked_foods.html', context)
+
+
+class RecommendedFood(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        i = 0
+        while i < customers_array.size:
+            if customers_array[i] == pk:
+                customer_cluster = kmeans.predict([category_count_customers[i]])
+            i = i + 1
+        j = 0
+        while j < customers_array.size:
+            if kmeans.predict([category_count_customers[j]]) == customer_cluster[0]:
+                print('girdi')
+                print(kmeans.predict([category_count_customers[j]])[0])
+                print(j)
+                print(category_count_customers[j])
+                customer = Customer.objects.get(pk = customers_array[j])
+                liked_foods = Food.objects.filter(likes__user=customer)
+                random_num = random.randint(0, 8)
+                recommended_food = liked_foods[random_num]
+                print(recommended_food)
+                print(random_num)
+                print(customer.pk)
+                j = customers_array.size + 1
+            j = j+1
+        context = {
+            'recommended_food': recommended_food
+        }
+        return render(request, 'customer_operations/recommended_food.html', context)
+
 
 
 

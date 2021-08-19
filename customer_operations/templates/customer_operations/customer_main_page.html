@@ -18,8 +18,8 @@
             <td><a href="{% url 'cheapest_restaurants' %}" class = "btn btn-danger">Cheapest Restaurants</a></td>
             <td><a href="{% url 'popular_foods' %}" class = "btn btn-success">Popular Foods</a></td>
             <td><a href="{% url 'cheapest_foods' %}" class = "btn btn-danger">Cheapest Foods</a></td>
-            <td><a href="{% url 'most_liked_foods' %}" class = "btn btn-info">Most Liked Foods</a></td>
-
+            <td><a href="{% url 'most_liked_foods' %}" class = "btn btn-success">Most Liked Foods</a></td>
+            <td><a href="{% url 'recommended_food' pk=customer.pk %}" class = "btn btn-info">Recommend Food</a></td>
         </tr>
     </div>
 

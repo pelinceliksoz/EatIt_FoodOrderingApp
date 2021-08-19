@@ -19,5 +19,6 @@ urlpatterns = [
     path('popular_foods', views.PopularFoodsView.as_view(), name='popular_foods'),
     path('cheapest_restaurants', views.CheapestRestaurantsView.as_view(), name='cheapest_restaurants'),
     path('most_liked_foods', views.MostLikedFoodsView.as_view(), name='most_liked_foods'),
+    path('recommended_food/<int:pk>/', views.RecommendedFood.as_view(), name='recommended_food'),
 
 ]
