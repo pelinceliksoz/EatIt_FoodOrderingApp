@@ -34,7 +34,6 @@
       <tbody>
           {% for restaurant,food in most_ordered_foods.items %}
               <tr>
-{#                    <td><a href="/food_details/{{food.pk}}"><img class="menu-image" src= "{{ BASE_DIR }}/static/images/{{ food.food_pic }}" alt="{{ food.food_name }}"   ></a></td>#}
                     <td>{{ restaurant.restaurant_name }}</td>
                     <td>{{ restaurant.category }}</td>
                     <td>{{ restaurant.ordered_food_count }}</td>
