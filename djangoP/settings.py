@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'eatit',
         'USER': 'postgres',
         'PASSWORD': '1234',
-        'HOST': 'localhost'
+        'HOST': 'db'
     }
 }
 

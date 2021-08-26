@@ -25,40 +25,32 @@ from sklearn.cluster import KMeans
 import pickle
 import sys
 import ast
-
-print("************************************************************************")
-customers = Customer.objects.filter().values_list('pk', flat=True)
-customers_array = numpy.array(customers)
-print(customers_array)
-categories = Food.CATEGORY
-i = 0
-categories_array = []
-while i < 9:
-    categories_array.append(categories[i][1])
-    i = i+1
-numpy.array(categories_array)
-print(categories_array)
-category_count_customers = []
-for customer in customers_array:
-    category_count_array = []
-    for category in categories_array:
-        foods = Food.objects.filter(likes__user=customer, category=category)
-        foods_array = numpy.array(foods)
-        category_count_array.append(foods_array.size)
-    numpy.array(category_count_array)
-    foods_array = numpy.array(foods)
-    category_count_customers.append(category_count_array)
-    numpy.array(category_count_customers)
-print(category_count_customers)
-print("************************************************************************")
-
-kmeans = KMeans(n_clusters=3, random_state=0).fit(category_count_customers)
-print(kmeans.predict([category_count_customers[1]]))
-print(kmeans.labels_)
-
-print("----------------------------------------------------------------------")
-
-
+# 
+# customers = Customer.objects.filter().values_list('pk', flat=True)
+# customers_array = numpy.array(customers)
+# categories = Food.CATEGORY
+# i = 0
+# categories_array = []
+# while i < 9:
+#     categories_array.append(categories[i][1])
+#     i = i+1
+# numpy.array(categories_array)
+# category_count_customers = []
+# for customer in customers_array:
+#     category_count_array = []
+#     for category in categories_array:
+#         foods = Food.objects.filter(likes__user=customer, category=category)
+#         foods_array = numpy.array(foods)
+#         category_count_array.append(foods_array.size)
+#     numpy.array(category_count_array)
+#     foods_array = numpy.array(foods)
+#     category_count_customers.append(category_count_array)
+#     numpy.array(category_count_customers)
+# 
+# kmeans = KMeans(n_clusters=3, random_state=0).fit(category_count_customers)
+# 
+# 
+# 
 
 
 
